@@ -21,8 +21,8 @@ This umbra module removes that limitation. It has the following order of executi
 
 1. If path or file name, use it directly. This is largely just for muscle memory compatibility
 2. If not path:
-    1. Look in `$UMBRA_ZELLIJ_PRIVATE_SUBDIR` (default: `${git_root}/.git/zellij/`) 
-    2. Look in `$UMBRA_ZELLIJ_PUBLIC_SUBDIR` (default: `${git_root}/dev/zellij/`)
+    1. Look in `$UMBRA_ZELLIJ_PRIVATE_SUBDIR` (default: `{{git_root}}/.git/zellij/`) 
+    2. Look in `$UMBRA_ZELLIJ_PUBLIC_SUBDIR` (default: `{{git_root}}/dev/zellij/`)
     3. Forward the string verbatim to zellij. This will trigger a lookup against the standard layout_dir.
 
 This particular feature synergises well with both [localrc](docs/modules/localrc.md), which has a very similar private vs. public distinction, and [direnv](https://github.com/direnv/direnv/)

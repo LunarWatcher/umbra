@@ -16,8 +16,8 @@ Note that there's no way to un-source a .localrc. You can disable it so it isn't
 
 ## Source order
 
-1. `${git_root}/.localrc`
-2. `${git_root}/.git/.localrc` 
+1. `{{ git_root }}/.localrc`
+2. `{{ git_root }}/.git/.localrc` 
 
 ## Security
 
