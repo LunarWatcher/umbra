@@ -1,0 +1,21 @@
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        children
+        pane size=2 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+    tab name="Main development view" {
+        pane name="Run" cwd="build"
+        pane split_direction="vertical" {
+            pane cwd="build" name="Tests" {
+                command "zsh"
+                args "-c" "make -j $(nproc) test"
+            }
+            pane name="Git"
+        }
+    }
+}

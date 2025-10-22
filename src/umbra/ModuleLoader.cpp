@@ -11,7 +11,7 @@ ModuleLoader::ModuleLoader() : app(
 ) {
 
 #define CREATE_MODULE(type) std::make_shared<type>()
-    app.require_subcommand(true);
+    app.require_subcommand(-1);
     std::vector<std::shared_ptr<Module>> modules = {
         CREATE_MODULE(ZellijModule)
     };  
@@ -24,6 +24,26 @@ ModuleLoader::ModuleLoader() : app(
         }
         this->modules[rootSubcommand] = mod;
     }
+
+    // TODO: optimally, this flag and the subcommand should be mutually exclusive
+    app.add_flag_callback(
+        "--version,-v",
+        []() {
+            std::cout << "umbra "
+                << (UMBRA_VERSION[0] == 'v' ? "" : "DEV ")
+                << UMBRA_VERSION << std::endl;
+        },
+        "Prints the version and exits"
+    );
+
+    app
+        .footer(
+            R"(Umbra is open-source and licensed under the MIT License.
+    https://codeberg.org/LunarWatcher/umbra/src/branch/master/LICENSE
+
+Code available on GitHub and Codeberg:
+* https://codeberg.org/LunarWatcher/umbra
+* https://github.com/LunarWatcher/umbra)");
 }
 
 ErrorCode ModuleLoader::parse(int argc, const char* argv[]) {
@@ -33,6 +53,8 @@ ErrorCode ModuleLoader::parse(int argc, const char* argv[]) {
         (this->app).exit(e);
         return ErrorCode::GENERIC_ERROR;
     } catch(const Exception& e) {
+        // TODO: exception handling for the custom exceptions could be a lot better than this, but I'm not currently
+        // sure what I could add that's actually useful rather than just a gimmick
         std::cerr
             << stc::colour::fg<stc::colour::FourBitColour::RED>
             << stc::colour::use<stc::colour::Typography::BOLD>

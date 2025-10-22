@@ -1,6 +1,7 @@
 #include "FilesystemExt.hpp"
 #include <filesystem>
 #include <iostream>
+#include <vector>
 
 namespace umbra {
 
@@ -16,7 +17,10 @@ std::optional<std::string> util::getGitRoot() {
         std::cerr << stdout << std::endl;
         return std::nullopt;
     }
-
+    stdout.erase(
+        std::remove(stdout.begin(), stdout.end(), '\n'),
+        stdout.cend()
+    );
     return stdout;
 }
 

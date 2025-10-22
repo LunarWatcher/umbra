@@ -12,11 +12,36 @@ Generative AI uses training data [based on plagiarism and piracy](https://web.ar
 
 ## Development setup
 
+You need:
 
+* Linux (still)
+* CMake 3.27 or newer
+* A C++23 compiler
+* An internet connection
+* The repo cloned
+* `make`, or another CMake generator. `make` is usually available everywhere, and therefore what's used in this documentation. If you don't use make, you'll need to replace steps explicitly invoking `make`, and this is left as an exercise to the reader.
+
+```
+mkdir build
+cd build
+# -DUMBRA_LINT runs in the CI and should be enabled. This does drastically increase compile time.
+# -DUMBRA_SANITISE does not run in the CI, but should be enabled
+
+cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DUMBRA_LINT=ON -DUMBRA_SANITISE=ON
+
+# Build only 
+make -j $(nproc)
+
+# Run
+make -j $(nproc) run
+```
 
 ### Running tests
 
-TBA
+After general setup, you can just run
+```bash
+make -j $(nproc) test
+```
 
 ### Testing policy
 
@@ -31,3 +56,18 @@ In practice, this means:
 * If you're working with edge-cases, test them
 
 Writing tests isn't always feasible, but it should be attempted whereever possible. However, if any tests break, they must be fixed. Removal should only be done if the corresponding functionality is removed, and not as a way to bypass the test failures to maybe perhaps fix later.
+
+### Dependency policy
+
+No unnecessary compile-time dependencies should be introduced, as compile-time dependencies increase the complexity of actually getting stuff built by and shipped to end-users.
+
+Currently, the following three dependencies are used:
+
+* [Catch2](https://github.com/catchorg/Catch2/) (tests only, so never shipped)
+* [CLI11](https://github.com/CLIUtils/CLI11) for command-line parsing
+* [stc](https://github.com/LunarWatcher/stc) for multiple common utils
+* PLANNED: at least a library for JSON, and possibly one for YAML. To be determined
+
+All other dependencies are exclusively runtime-dependencies that are only ever attempted used if the user uses a corresponding command. This is preferred over linking, as anything that could force a recompilation to use certain modules is undesirable. One functionally identical binary should always be produced regardless of what optional dependencies are in the compiling user's PATH.
+
+Additional dependencies may be added as long as the need for it can be properly explained, it's possible to install with `FetchContent` without a `patch`, and it can build static libraries. For ease-of-installation, avoiding folders outside `bin` is preferred.

@@ -1,14 +1,14 @@
 #pragma once
 
-#include "umbra/util/FilesystemExt.hpp"
-#include <optional>
 #include <string>
 
 namespace umbra::parse {
 
-struct ParseContext {
-    std::optional<std::string> gitRoot = umbra::util::getGitRoot();
-};
+/**
+ * Currently intentionally left empty. Will likely be populated in the future.
+ * Largely exists now because signature refactoring annoying (really need to look into comby at some point)
+ */
+struct ParseContext {};
 
 extern std::string parse(const std::string& in, const ParseContext& context);
 

@@ -1,19 +1,107 @@
 
 #include "CLI/CLI.hpp"
+#include "stc/Environment.hpp"
 #include "umbra/except/Exception.hpp"
+#include "umbra/util/FilesystemExt.hpp"
 #include "ZellijModule.hpp"
 
 namespace umbra {
 
 CLI::App* ZellijModule::onLoadCLI(CLI::App& app) {
     auto subcommand = app.add_subcommand("zellij");
-    subcommand->alias("z");
+    subcommand
+        ->alias("z")
+        ->allow_extras(true)
+        ->description("Adds features on top of Zellij. Requires `zellij` installed.")
+        ->usage(R"(
+USAGE:
+  # Open the default layout
+  umbra z
 
-    subcommand->callback([]() {
-        throw Exception("Hi");
+  # Only open the layout
+  umbra z layout
+
+  # Forward flags to zellij
+  umbra z layout -- zellij-flags
+
+  # List layouts and layout directories in prioritised order
+  umbra z --list
+
+LAYOUT LOOKUP ORDER:
+  1. $UMBRA_ZELLIJ_PRIVATE_SUBDIR
+  2. $UMBRA_ZELLIJ_PUBLIC_SUBDIR
+  3. Passthrough to zellij for check against `layout_dir` in zellij
+
+ENVIRONMENT VARIABLES:
+* UMBRA_ZELLIJ_PRIVATE_SUBDIR (default: `{{git_root}}/.git/zellij`; supports templates)
+    Folder for privately shared (non-committed) zellij layouts
+* UMBRA_ZELLIJ_PUBLIC_SUBDIR (default: `{{git_root}}/.git/zellij`; supports templates)
+    Folder for publicly shared (committed) zellij layouts
+* UMBRA_ZELLIJ_NAME_CONVENTION (default: `default.kdl`; supports templates)
+    What name to use for the layout if none is provided. This can technically be a full path.)");
+
+    subcommand->callback([this]() {
+        moduleMain();
     });
+    subcommand->add_option(
+        "layout",
+        layout,
+        "Path or name of the layout. Defaults to $UMBRA_ZELLIJ_NAME_CONVENTION"
+    )
+        ->default_val(stc::getEnv("UMBRA_ZELLIJ_NAME_CONVENTION", "default.kdl"))
+        ->transform(parseTransform)
+        ->required(false);
+
+    subcommand->add_flag(
+        "--list,-l",
+        listLayouts,
+        "Lists the layout directories and the contents within them. This does not include anything in zellij's layout_dir"
+    )
+        ->default_val(false);
 
     return subcommand;
+}
+
+void ZellijModule::moduleMain() {
+    if (listLayouts) {
+        std::cout << "IOU 1x layout list" << std::endl;
+        return;
+    }
+
+    if (layout.empty()) {
+        throw Exception(
+            "No layout provided directly or implicitly; cannot load"
+        );
+    }
+
+    auto resolvedPath = util::findMatchesInPaths({
+        getEnvWithTransform("UMBRA_ZELLIJ_PRIVATE_SUBDIR", "{{git_root}}/.git/zellij/"),
+        getEnvWithTransform("UMBRA_ZELLIJ_PUBLIC_SUBDIR", "{{git_root}}/dev/zellij/"),
+    }, {
+        layout
+    }, true);
+
+    std::string resolvedLayout = layout;
+    if (!resolvedPath.empty()) {
+        resolvedLayout = resolvedPath.at(0);
+        std::cout << "Resolved path to " << resolvedLayout << std::endl;
+    } else {
+        std::cout << "Failed to resolve path, passing " << resolvedLayout << " directly" << std::endl;
+    }
+
+    int code = 0;
+    stc::syscommandNoCapture({
+        "/usr/bin/env",
+        "zellij",
+        "-l",
+        resolvedLayout.c_str()
+    }, &code);
+
+    if (code != 0) {
+        throw Exception("Failed to load zellij");
+    }
+
+
 }
 
 }

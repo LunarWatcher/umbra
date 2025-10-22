@@ -1,15 +1,17 @@
 #include "Parse.hpp"
 #include "umbra/except/Exception.hpp"
+#include "umbra/util/FilesystemExt.hpp"
 #include <format>
 #include <sstream>
 #include <stc/StringUtil.hpp>
 
 namespace umbra {
 
-std::string parse::parse(const std::string& in, const ParseContext& context) {
-    if (in.size() == 0) {
+std::string parse::parse(const std::string& in, const ParseContext& /*context*/) {
+    if (in.empty()) {
         return "";
     }
+    auto gitRoot = umbra::util::getGitRoot();
 
     std::stringstream out;
     size_t i;
@@ -31,10 +33,10 @@ std::string parse::parse(const std::string& in, const ParseContext& context) {
             contents.erase(0, contents.find_first_not_of(' '));
 
             if (contents == "git_root") {
-                if (!context.gitRoot.has_value()) {
+                if (!gitRoot.has_value()) {
                     out << "./";
                 } else {
-                    out << context.gitRoot.value();
+                    out << gitRoot.value();
                 }
             } else {
                 throw TemplateException(
@@ -42,7 +44,9 @@ std::string parse::parse(const std::string& in, const ParseContext& context) {
                 );
             }
 
-            i = end + 2;
+            // Technically +2, but another +1 happens when the for loop cycles, so +2 eats a character immediately after
+            // the {{template}}
+            i = end + 1;
             continue;
         } else {
             out << in.at(i);

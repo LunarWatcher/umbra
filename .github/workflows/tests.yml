@@ -1,0 +1,48 @@
+name: Test workflow
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@main
+      - name: Install deps
+        run: |
+          sudo apt update && sudo apt upgrade -y
+          sudo apt install -y cmake
+      - name: Print environment
+        run: |
+          cmake --version
+      - name: Run build
+        run: |
+          mkdir build && cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release
+          make -j $(nproc)
+      - name: Run test
+        run: |
+          cd build
+          cmake --build . --target test
+  lint:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@main
+      - name: Install deps
+        run: |
+          sudo apt update && sudo apt upgrade -y
+          sudo apt install -y cmake
+      - name: Print environment
+        run: |
+          cmake --version
+      - name: Run build
+        run: |
+          mkdir build && cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release
+          make -j $(nproc)
+      - name: Run build
+        run: |
+          mkdir build && cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DUMBRA_LINT=ON -DUMBRA_LINT_WARNINGS_ARE_ERRORS=ON
+          make -j $(nproc)

@@ -1,11 +1,17 @@
 #pragma once
 
 #include "CLI/CLI.hpp"
+#include "umbra/cli/ParseTransformValidator.hpp"
+#include "umbra/util/Parse.hpp"
 
 namespace umbra {
 
 class Module {
+protected:
+    parse::ParseContext parseCtx;
+    ParseTransformValidator parseTransform;
 public:
+    Module();
     virtual ~Module() = default;
 
     /**
@@ -31,6 +37,11 @@ public:
      * This acts as a forced `--silent` flag.
      */
     virtual bool isModuleQuiet() { return false; }
+
+    std::string getEnvWithTransform(
+        const std::string& name,
+        const std::string& defaultVal = ""
+    );
 };
 
 }
