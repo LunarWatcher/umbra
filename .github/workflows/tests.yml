@@ -36,12 +36,7 @@ jobs:
       - name: Print environment
         run: |
           cmake --version
-      - name: Run build
-        run: |
-          mkdir build && cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release
-          make -j $(nproc)
-      - name: Run build
+      - name: Lint
         run: |
           mkdir build && cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release -DUMBRA_LINT=ON -DUMBRA_LINT_WARNINGS_ARE_ERRORS=ON
