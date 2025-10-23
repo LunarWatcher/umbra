@@ -1,14 +1,23 @@
 #pragma once
 
+#include "umbra/util/FilesystemExt.hpp"
 #include <string>
 
 namespace umbra::parse {
 
 /**
- * Currently intentionally left empty. Will likely be populated in the future.
- * Largely exists now because signature refactoring annoying (really need to look into comby at some point)
+ * Contains common context that should only be initialised once per call.
  */
-struct ParseContext {};
+struct CommonContext {
+    std::optional<std::string> gitRoot = util::getGitRoot();
+};
+
+/**
+ * Contains per-module context, as well as a reference to the global CommonContext
+ */
+struct ParseContext {
+    const CommonContext& commonContext;
+};
 
 extern std::string parse(const std::string& in, const ParseContext& context);
 

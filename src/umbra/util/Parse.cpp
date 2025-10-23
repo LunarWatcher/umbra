@@ -1,17 +1,16 @@
 #include "Parse.hpp"
 #include "umbra/except/Exception.hpp"
-#include "umbra/util/FilesystemExt.hpp"
 #include <format>
 #include <sstream>
 #include <stc/StringUtil.hpp>
 
 namespace umbra {
 
-std::string parse::parse(const std::string& in, const ParseContext& /*context*/) {
+std::string parse::parse(const std::string& in, const ParseContext& context) {
     if (in.empty()) {
         return "";
     }
-    auto gitRoot = umbra::util::getGitRoot();
+    auto gitRoot = context.commonContext.gitRoot;
 
     std::stringstream out;
     size_t i;

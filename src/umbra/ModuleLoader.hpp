@@ -3,6 +3,7 @@
 #include "CLI/CLI.hpp"
 #include "umbra/except/ErrorCode.hpp"
 #include "umbra/modules/Module.hpp"
+#include "umbra/util/Parse.hpp"
 #include <memory>
 
 namespace umbra {
@@ -10,6 +11,7 @@ namespace umbra {
 class ModuleLoader {
 public:
     CLI::App app;
+    parse::CommonContext cc;
 
     std::map<
         CLI::App* /* rootSubcommand */,

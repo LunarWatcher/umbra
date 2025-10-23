@@ -14,7 +14,7 @@ std::optional<std::string> util::getGitRoot() {
         "--show-toplevel"
     }, &code);
     if (code != 0) {
-        std::cerr << stdout << std::endl;
+        std::cerr << "Failed to load git root: " << stdout;
         return std::nullopt;
     }
     stdout.erase(

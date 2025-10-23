@@ -11,7 +11,7 @@ protected:
     parse::ParseContext parseCtx;
     ParseTransformValidator parseTransform;
 public:
-    Module();
+    Module(const parse::ParseContext& ctx);
     virtual ~Module() = default;
 
     /**

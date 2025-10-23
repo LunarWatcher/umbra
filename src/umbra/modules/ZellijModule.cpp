@@ -8,6 +8,10 @@
 
 namespace umbra {
 
+ZellijModule::ZellijModule(const parse::CommonContext& ctx) : Module(parse::ParseContext {
+    .commonContext = ctx
+}) {}
+
 CLI::App* ZellijModule::onLoadCLI(CLI::App& app) {
     subcommand = app.add_subcommand("zellij");
     subcommand

@@ -10,7 +10,9 @@ ModuleLoader::ModuleLoader() : app(
     "Magic terminal utilities"
 ) {
 
-#define CREATE_MODULE(type) std::make_shared<type>()
+#define CREATE_MODULE(type) std::make_shared<type>( \
+                                cc \
+                            )
     app.require_subcommand(-1);
     std::vector<std::shared_ptr<Module>> modules = {
         CREATE_MODULE(ZellijModule)

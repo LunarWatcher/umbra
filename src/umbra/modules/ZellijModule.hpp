@@ -22,6 +22,8 @@ private:
 
     void printList();
 public:
+    ZellijModule(const parse::CommonContext& commonCtx);
+
     virtual CLI::App* onLoadCLI(CLI::App& app) override;
 
     /**

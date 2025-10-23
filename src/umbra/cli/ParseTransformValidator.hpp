@@ -14,7 +14,6 @@ struct ParseTransformValidator : public CLI::Validator {
         // there's other shit that could cause UB here, so let's just copy for now.
         [ctx](std::string& val) -> std::string {
             val = parse::parse(val, ctx);
-            std::cout << "hi" << std::endl;
             return {};
         },
         // The description is the outward-facing name in positionals for whatever reason, so this can't actually be a

@@ -3,9 +3,8 @@
 
 namespace umbra {
 
-Module::Module() : parseTransform(parseCtx) {
-
-}
+Module::Module(const parse::ParseContext& parseCtx)
+    : parseCtx(parseCtx), parseTransform(parseCtx) {}
 
 std::string Module::getEnvWithTransform(
     const std::string& name,
