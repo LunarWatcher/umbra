@@ -1,0 +1,45 @@
+name: Build binaries for distribution
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  assemble:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@main
+      - name: Install deps
+        run: |
+          sudo apt update && sudo apt upgrade -y
+          sudo apt install -y cmake
+      - name: Print environment
+        run: |
+          cmake --version
+      - name: Run build
+        run: |
+          mkdir build && cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release
+          make -j $(nproc)
+      - name: Assemble dist files
+        run: |
+          mkdir dist
+          mkdir dist/bin
+          cp build/bin/umbra dist/bin
+          cp -r shell/* build/bin
+      - name: Compress distribution
+        run: |
+          tar -cvzf umbra.tar.gz dist/*
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: umbra.tar.gz
+          asset_name: umbra-linux-x64.tar.gz
+          tag: ${{ github.ref }}
+          overwrite: true
