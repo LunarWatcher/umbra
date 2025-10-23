@@ -3,6 +3,7 @@
 #include "stc/Environment.hpp"
 #include "umbra/except/Exception.hpp"
 #include "umbra/util/FilesystemExt.hpp"
+#include <filesystem>
 #include "ZellijModule.hpp"
 
 namespace umbra {
@@ -64,7 +65,7 @@ ENVIRONMENT VARIABLES:
 
 void ZellijModule::moduleMain() {
     if (listLayouts) {
-        std::cout << "IOU 1x layout list" << std::endl;
+        printList();
         return;
     }
 
@@ -96,10 +97,7 @@ std::string ZellijModule::resolvePathFromName(const std::string& name) {
         return name;
     }
 
-    auto resolvedPath = util::findMatchesInPaths({
-        getEnvWithTransform("UMBRA_ZELLIJ_PRIVATE_SUBDIR", "{{git_root}}/.git/zellij/"),
-        getEnvWithTransform("UMBRA_ZELLIJ_PUBLIC_SUBDIR", "{{git_root}}/dev/zellij/"),
-    }, {
+    auto resolvedPath = util::findMatchesInPaths(lookupPaths, {
         name.ends_with(".kdl") ? name : name + ".kdl"
     }, true);
 
@@ -112,5 +110,54 @@ std::string ZellijModule::resolvePathFromName(const std::string& name) {
     }
     return resolvedLayout;
 }
+
+// TODO: this should become a standard function in FilesystemExt
+std::vector<FilesystemLookupDescriptor> ZellijModule::listLayoutsAndDirs() {
+    std::vector<FilesystemLookupDescriptor> out;
+    for (auto& dir : lookupPaths) {
+        FilesystemLookupDescriptor desc = {
+            .folder = dir,
+            .contents = {}
+        };
+        if (std::filesystem::exists(dir)) {
+            for (auto& path : std::filesystem::directory_iterator(dir)) {
+                if (std::filesystem::is_directory(path)) {
+                    continue;
+                }
+
+                desc.contents.push_back(
+                    std::filesystem::relative(path.path(), dir).string()
+                );
+            }
+        }
+        out.push_back(desc);
+    }
+    return out;
+}
+
+// TODO: this should probably become a standard function in FilesystemExt (maybe Module, though with an extra arg)
+void ZellijModule::printList() {
+    auto list = listLayoutsAndDirs();
+
+    for (auto& [dir, files] : list) {
+        std::cout << dir.string() << std::endl;
+        bool hasLiveTemplates = false;
+        for (auto& file : files) {
+            if (!file.ends_with(".kdl")) {
+                continue;
+            }
+
+            std::cout << "\t" << file << std::endl;
+            hasLiveTemplates = true;
+        }
+
+        if (!hasLiveTemplates) {
+            std::cout << "\t" << "No templates found" << std::endl;
+        }
+        std::cout << "\n\n";
+    }
+}
+
+
 
 }
