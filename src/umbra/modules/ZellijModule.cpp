@@ -74,20 +74,7 @@ void ZellijModule::moduleMain() {
         );
     }
 
-    auto resolvedPath = util::findMatchesInPaths({
-        getEnvWithTransform("UMBRA_ZELLIJ_PRIVATE_SUBDIR", "{{git_root}}/.git/zellij/"),
-        getEnvWithTransform("UMBRA_ZELLIJ_PUBLIC_SUBDIR", "{{git_root}}/dev/zellij/"),
-    }, {
-        layout
-    }, true);
-
-    std::string resolvedLayout = layout;
-    if (!resolvedPath.empty()) {
-        resolvedLayout = resolvedPath.at(0);
-        std::cout << "Resolved path to " << resolvedLayout << std::endl;
-    } else {
-        std::cout << "Failed to resolve path, passing " << resolvedLayout << " directly" << std::endl;
-    }
+    auto resolvedLayout = resolvePathFromName(layout);
 
     int code = 0;
     stc::syscommandNoCapture({
@@ -102,6 +89,28 @@ void ZellijModule::moduleMain() {
     }
 
 
+}
+
+std::string ZellijModule::resolvePathFromName(const std::string& name) {
+    if (name.contains('/') || name.contains('\\')) {
+        return name;
+    }
+
+    auto resolvedPath = util::findMatchesInPaths({
+        getEnvWithTransform("UMBRA_ZELLIJ_PRIVATE_SUBDIR", "{{git_root}}/.git/zellij/"),
+        getEnvWithTransform("UMBRA_ZELLIJ_PUBLIC_SUBDIR", "{{git_root}}/dev/zellij/"),
+    }, {
+        name.ends_with(".kdl") ? name : name + ".kdl"
+    }, true);
+
+    std::string resolvedLayout = name;
+    if (!resolvedPath.empty()) {
+        resolvedLayout = resolvedPath.at(0);
+        std::cout << "Resolved path to " << resolvedLayout << std::endl;
+    } else {
+        std::cout << "Failed to resolve path, passing " << resolvedLayout << " directly" << std::endl;
+    }
+    return resolvedLayout;
 }
 
 }

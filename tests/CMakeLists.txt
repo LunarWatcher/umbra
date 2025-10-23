@@ -1,4 +1,6 @@
 add_executable(tests 
+    src/modules/ZellijModuleTests.cpp
+
     src/util/ParseTests.cpp
 
     src/Main.cpp
