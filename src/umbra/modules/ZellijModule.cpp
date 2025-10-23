@@ -137,6 +137,10 @@ std::vector<FilesystemLookupDescriptor> ZellijModule::listLayoutsAndDirs() {
 
 // TODO: this should probably become a standard function in FilesystemExt (maybe Module, though with an extra arg)
 void ZellijModule::printList() {
+    std::cout << "Folders are ordered by priority, so layouts with the same name are picked from the first "
+        << "available folder. Zellij's `layout_dir` is not listed here, but non-matching layouts are passed directly "
+        << "to zellij, so layout_dir and absolute and relative paths are also in play. Keeping track of these is left "
+        << "as an exercise to the user." << std::endl;
     auto list = listLayoutsAndDirs();
 
     for (auto& [dir, files] : list) {
