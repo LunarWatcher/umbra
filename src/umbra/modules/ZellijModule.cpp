@@ -9,7 +9,7 @@
 namespace umbra {
 
 CLI::App* ZellijModule::onLoadCLI(CLI::App& app) {
-    auto subcommand = app.add_subcommand("zellij");
+    subcommand = app.add_subcommand("zellij");
     subcommand
         ->alias("z")
         ->allow_extras(true)
@@ -60,6 +60,13 @@ ENVIRONMENT VARIABLES:
     )
         ->default_val(false);
 
+    subcommand->add_option(
+        "zellij-args",
+        passthroughArgs,
+        "Args to pass through directly to zellij. This option must start with a -- to be used to prevent umbra from "
+        "evaluating the flags as part of umbra's argument parsing. See the USAGE section."
+    );
+
     return subcommand;
 }
 
@@ -76,14 +83,19 @@ void ZellijModule::moduleMain() {
     }
 
     auto resolvedLayout = resolvePathFromName(layout);
-
-    int code = 0;
-    stc::syscommandNoCapture({
+    std::vector<const char*> command = {
         "/usr/bin/env",
         "zellij",
         "-l",
         resolvedLayout.c_str()
-    }, &code);
+    };
+
+    for (auto& cmd : passthroughArgs) {
+        command.push_back(cmd.c_str());
+    }
+
+    int code = 0;
+    stc::syscommandNoCapture(command, &code);
 
     if (code != 0) {
         throw Exception("Failed to load zellij");

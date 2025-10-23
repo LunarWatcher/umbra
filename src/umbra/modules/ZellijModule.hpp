@@ -15,6 +15,8 @@ private:
         getEnvWithTransform("UMBRA_ZELLIJ_PRIVATE_SUBDIR", "{{git_root}}/.git/zellij/"),
         getEnvWithTransform("UMBRA_ZELLIJ_PUBLIC_SUBDIR", "{{git_root}}/dev/zellij/"),
     };
+    std::vector<std::string> passthroughArgs;
+    CLI::App* subcommand;
 
     void moduleMain();
 
