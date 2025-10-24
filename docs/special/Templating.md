@@ -32,12 +32,12 @@ Standard identifiers are built-in and manually supported identifiers. Using them
 
 1. The expected value
 2. A fallback value if the expected value is unavailable
-3. Abort scenarios, where a hard error is generated. This is reserved for very specific scenarios, such as teh binary required for the identifier outright missing.
+3. Abort scenarios, where a hard error is generated. This is reserved for very specific scenarios, such as the binary required for the identifier outright missing.
 
 | Identifier | Description | Expected value | Fallback value | Aborts |
 | --- | --- | --- | --- | --- |
 | `git_root` | Path to the Git root | `/path/to/git/repo` | `./` if not in a git repo | If the `git` executable is not found. |
-| `folder_name` [not implemented] | Name of the folder in the working directory | `working_dir` for `/path/to/working_dir` | - | - |
+| `curr_folder` | Name of the folder in the working directory | `working_dir` for `/path/to/working_dir` | - | - |
 
 
 ### Environment variables [not implemented, may not be implemented]

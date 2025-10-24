@@ -1,6 +1,7 @@
 #include "umbra/util/FilesystemExt.hpp"
 #include "umbra/util/Parse.hpp"
 #include <catch2/catch_test_macros.hpp>
+#include <filesystem>
 #include <format>
 #include <format>
 
@@ -34,6 +35,11 @@ TEST_CASE("Brackets are handled correctly", "[ParseTests]") {
 
     SECTION("Git root is correctly expanded") {
         REQUIRE(umbra::parse::parse("{{ git_root }}", {cc}) == referenceRoot.value());
+    }
+
+    SECTION("curr_folder is correctly expanded") {
+        const auto cwd = std::filesystem::current_path().filename().string();
+        REQUIRE(umbra::parse::parse("{{curr_folder}}", {cc}) == cwd);
     }
 
     SECTION("Other characters are not eaten") {

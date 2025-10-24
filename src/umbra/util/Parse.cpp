@@ -1,5 +1,6 @@
 #include "Parse.hpp"
 #include "umbra/except/Exception.hpp"
+#include <filesystem>
 #include <format>
 #include <sstream>
 #include <stc/StringUtil.hpp>
@@ -31,12 +32,16 @@ std::string parse::parse(const std::string& in, const ParseContext& context) {
             contents.erase(contents.find_last_not_of(' ') + 1);
             contents.erase(0, contents.find_first_not_of(' '));
 
+            // TODO: This probably needs to be replaced with a map or something instead.
+            // This will not scale well
             if (contents == "git_root") {
                 if (!gitRoot.has_value()) {
                     out << "./";
                 } else {
                     out << gitRoot.value();
                 }
+            } else if (contents == "curr_folder") {
+                out << std::filesystem::current_path().filename().string();
             } else {
                 throw TemplateException(
                     std::format("Invalid template used: {}", contents)
