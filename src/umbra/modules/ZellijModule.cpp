@@ -1,5 +1,6 @@
 
 #include "CLI/CLI.hpp"
+#include "spdlog/spdlog.h"
 #include "stc/Environment.hpp"
 #include "umbra/except/Exception.hpp"
 #include "umbra/util/FilesystemExt.hpp"
@@ -45,6 +46,7 @@ ENVIRONMENT VARIABLES:
 * UMBRA_ZELLIJ_NAME_CONVENTION (default: `default.kdl`; supports templates)
     What name to use for the layout if none is provided. This can technically be a full path.)");
 
+    autoConfVerbosity(subcommand);
     subcommand->callback([this]() {
         moduleMain();
     });
@@ -120,9 +122,9 @@ std::string ZellijModule::resolvePathFromName(const std::string& name) {
     std::string resolvedLayout = name;
     if (!resolvedPath.empty()) {
         resolvedLayout = resolvedPath.at(0);
-        std::cout << "Resolved path to " << resolvedLayout << std::endl;
+        spdlog::info("Resolved path to {}", resolvedLayout);
     } else {
-        std::cout << "Failed to resolve path, passing " << resolvedLayout << " directly" << std::endl;
+        spdlog::warn("Failed to resolve path, passing {} directly as -l", resolvedLayout);
     }
     return resolvedLayout;
 }

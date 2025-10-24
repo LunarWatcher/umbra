@@ -1,4 +1,5 @@
 #include "FilesystemExt.hpp"
+#include "spdlog/spdlog.h"
 #include <filesystem>
 #include <iostream>
 #include <vector>
@@ -14,7 +15,7 @@ std::optional<std::string> util::getGitRoot() {
         "--show-toplevel"
     }, &code);
     if (code != 0) {
-        std::cerr << "Failed to load git root: " << stdout;
+        spdlog::error("Failed to load git root: {}", stdout);
         return std::nullopt;
     }
     stdout.erase(

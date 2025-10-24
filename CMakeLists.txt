@@ -20,7 +20,6 @@ if (UMBRA_SANITISE)
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=undefined")
 endif()
 
-
 include(FetchContent)
 FetchContent_Declare(cli11
     GIT_REPOSITORY https://github.com/CLIUtils/CLI11
@@ -30,7 +29,16 @@ FetchContent_Declare(cli11
 FetchContent_Declare(stc
     GIT_REPOSITORY https://github.com/LunarWatcher/stc
 )
-FetchContent_MakeAvailable(cli11 stc)
+FetchContent_Declare(spdlog
+    GIT_REPOSITORY https://github.com/gabime/spdlog
+    GIT_TAG v1.16.0
+    EXCLUDE_FROM_ALL
+)
+FetchContent_MakeAvailable(
+    cli11
+    stc
+    spdlog
+)
 # Set up versioning {{{
 find_program(GIT git)
 if (GIT)
@@ -45,6 +53,10 @@ else()
 endif()
 add_definitions(-DUMBRA_VERSION="${UMBRA_VERSION}")
 # }}}
+
+if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DUMBRA_DEBUG")
+endif()
 
 add_subdirectory(src)
 add_subdirectory(tests EXCLUDE_FROM_ALL)

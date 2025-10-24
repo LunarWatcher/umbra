@@ -61,13 +61,32 @@ Writing tests isn't always feasible, but it should be attempted whereever possib
 
 No unnecessary compile-time dependencies should be introduced, as compile-time dependencies increase the complexity of actually getting stuff built by and shipped to end-users.
 
-Currently, the following three dependencies are used:
+Currently, the following four dependencies are used:
 
 * [Catch2](https://github.com/catchorg/Catch2/) (tests only, so never shipped)
 * [CLI11](https://github.com/CLIUtils/CLI11) for command-line parsing
 * [stc](https://github.com/LunarWatcher/stc) for multiple common utils
+* [spdlog](https://github.com/gabime/spdlog) for logging, because I didn't feel like implementing global state management to also shut the logger up when necessary when it has already been done
 * PLANNED: at least a library for JSON, and possibly one for YAML. To be determined
 
 All other dependencies are exclusively runtime-dependencies that are only ever attempted used if the user uses a corresponding command. This is preferred over linking, as anything that could force a recompilation to use certain modules is undesirable. One functionally identical binary should always be produced regardless of what optional dependencies are in the compiling user's PATH.
 
 Additional dependencies may be added as long as the need for it can be properly explained, it's possible to install with `FetchContent` without a `patch`, and it can build static libraries. For ease-of-installation, avoiding folders outside `bin` is preferred.
+
+### Logging strategy
+
+Umbra has a split logging strategy:
+
+* spdlog is used for anything of value to the user or to debuggers, but that isn't output. It's supporting information that needs to be possible to shut off entirely for use in stable scripts.
+* stdout (`std::cout`) is used for, shock, standard output. This is used for output that could be used in nested programs.
+* stderr (`std::cerr`) is used for terminating errors, i.e. error output that explains why the program shut down. `spdlog::error` can explain other details or intermediate steps, but `spdlog::error` can also be used for non-critical errors. 
+
+`std::cerr` is functionally our critical, so `spdlog::critical` should not be used.
+
+For scripters, this means:
+
+* To shut up irrelevant output, pass `-qq`
+* If the exit code is 0, the `stdout` (if any) can be used for further scripting
+* If the exit code is non-zero, the `stderr` will (likely[^1]) contain an error message that can be forwarded to the script's users or script's own logging
+
+[^1]: The error handling used in umbra uses custom exceptions, but not all errors are going to use these. How non-caught exceptions are logged (if at all) is a wildcard.

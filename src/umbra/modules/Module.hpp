@@ -38,6 +38,8 @@ public:
      */
     virtual bool isModuleQuiet() { return false; }
 
+    void autoConfVerbosity(CLI::App* subcommand);
+
     std::string getEnvWithTransform(
         const std::string& name,
         const std::string& defaultVal = ""
