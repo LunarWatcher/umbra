@@ -34,10 +34,14 @@ public:
      *
      * By default, this is false, as most modules are expected to have some kind of output. This should be set to true
      * if the module is expected to shut the fuck up or not.
-     * This acts as a forced `--silent` flag.
+     * This acts as a forced `-qq` flag (when using autoConfVerbosity).
      */
     virtual bool isModuleQuiet() { return false; }
 
+    /**
+     * Sets up standard config for -q and -v, and sets the default verbosity level based on isModuleQuiet if the app is
+     * parsed.
+     */
     void autoConfVerbosity(CLI::App* subcommand);
 
     std::string getEnvWithTransform(

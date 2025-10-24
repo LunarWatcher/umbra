@@ -24,13 +24,16 @@ void Module::autoConfVerbosity(CLI::App* subcommand) {
     auto* group = subcommand->add_option_group(
         "Verbosity",
         "Overrides the default verbosity. The default level for this module is "s
-        + (isModuleQuiet() ? "error" : "info")
+        + (isModuleQuiet() ? "<LOGGING DISABLED>" : "info")
         + ". These options do not affect standard output, and certain kinds of error output from umbra itself. "
         + "It also does not affect output from nested programs, if applicable."
     );
     auto* v = group->add_flag(
         "-v",
-        [](int64_t count) {
+        [this](int64_t count) {
+            if (!isModuleQuiet()) {
+                count += 1;
+            }
             if (count == 1) {
                 spdlog::set_level(spdlog::level::info);
             } else if (count == 2) {
@@ -40,7 +43,7 @@ void Module::autoConfVerbosity(CLI::App* subcommand) {
                 spdlog::set_level(spdlog::level::trace);
             }
         },
-        "Increases verbosity level. -v is info, -vv is debug, -vvv is trace."
+        "Increases verbosity level. Up to -vvv has an effect (-vv for non-quiet modules)"
     );
     group->add_flag(
         "-q",
