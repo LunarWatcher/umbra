@@ -11,6 +11,7 @@ This is a C++ extension that I use with my [dotfiles](https://github.com/LunarWa
     * MacOS will never be intentionally supported out of principle
 * bash, and optionally zsh
     * Note that zsh will have better support than bash, but the core scripts are written in bash as far as reasonably doable. Anything `sourced` is attempted written portably so nothing special needs to be done.
+* Git, notably used for path lookups. Technically not required, but functionally required for a lot of core functionality to work as described. Umbra won't break if you don't have git, but it will not work as advertised.
 
 ### Optional dependencies
 
