@@ -37,6 +37,37 @@ One example of this is the zellij module, which aims to make [zellij](https://gi
 
 On the magic side of things, `umbra z` takes an optional layout, with the default name being resolved by another environment variable. The default name _also_ supports templates, so if you set it to `{{folder_name}}`, you could have an organisation-level repo that contains `.kdl` layouts for every repo, or an in-repo subfolder that works with monorepos where changing the working directory is standard, and execution context is enough to just figure out which to use. 
 
+## Installation
+
+### From pre-compiled binaries
+
+For convenience, there's a pre-made script you can run:
+```bash
+sh -c "$(wget -O- https://raw.githubusercontent.com/LunarWatcher/umbra/master/scripts/install.sh)"
+```
+
+This script also contains the exact steps to do the install should you wish to do it manually. It's the `scripts/install.sh` here on Codeberg/GitHub. Note that you need `tar`, `curl`, and `wget` to use the script, so if you lack any of those dependencies and are unwilling to install them, you'll need to figure it out on your own.
+
+The exact steps will not be copied to the README. Note that the default install location is `~/.local/bin`, so no `sudo` is required.
+
+### From source
+
+```bash
+# Prerequisite: clone the repo
+# This is left as an exercise to the reader
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=${HOME}/.local
+make -j $(nproc)
+# This may install unnecessary third party deps too.
+make -j $(nproc) install
+
+# Shell scripts are not part of the install script, because it's normally
+# handled by the workflow, and I don't expect enough people are going to use 
+# umbra for it to be worth doing properly
+cp -r ../shell/* ${HOME}/.local/bin
+```
+
 ## License
 
 MIT. See the LICENSE file.

@@ -39,4 +39,10 @@ if (UMBRA_LINT)
     set_target_properties(umbrasrc PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_COMMAND}")
 endif()
 # }}}
+# Installation {{{
+install(
+    TARGETS umbra
+    DESTINATION bin
+)
+# }}}
 # vim:ft=cmake

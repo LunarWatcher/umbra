@@ -25,6 +25,7 @@ include(FetchContent)
 FetchContent_Declare(cli11
     GIT_REPOSITORY https://github.com/CLIUtils/CLI11
     GIT_TAG v2.5.0
+    EXCLUDE_FROM_ALL
 )
 FetchContent_Declare(stc
     GIT_REPOSITORY https://github.com/LunarWatcher/stc
