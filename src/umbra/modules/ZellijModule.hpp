@@ -24,7 +24,7 @@ private:
 public:
     ZellijModule(const parse::CommonContext& commonCtx);
 
-    virtual CLI::App* onLoadCLI(CLI::App& app) override;
+    virtual LoadInfo onLoadCLI(CLI::App& app) override;
 
     /**
      * Takes a string believed to be a layout name, and converts it to a path.

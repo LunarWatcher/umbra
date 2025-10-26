@@ -60,13 +60,8 @@ mkdir build
 cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=${HOME}/.local
 make -j $(nproc)
-# This may install unnecessary third party deps too.
+# This may install unnecessary third party deps too. CMake hard
 make -j $(nproc) install
-
-# Shell scripts are not part of the install script, because it's normally
-# handled by the workflow, and I don't expect enough people are going to use 
-# umbra for it to be worth doing properly
-cp -r ../shell/* ${HOME}/.local/bin
 ```
 
 ## License

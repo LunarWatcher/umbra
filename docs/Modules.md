@@ -3,7 +3,6 @@
 | Module name | Short description | Doc link | 
 | --- | --- | --- |
 | `zellij` | Enables some extra per-directory and scoping functionality not present in zellij proper | [modules/zellij.md](modules/zellij.md) |
-| `localrc` | Sources `.dirrc` from a couple different directories, and tries to do so slightly more safely than the naive approach. | [modules/localrc.md](docs/modules/localrc.md) |
 
 ## A note on the use of shell terminology
 

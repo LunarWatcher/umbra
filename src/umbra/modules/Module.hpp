@@ -3,8 +3,21 @@
 #include "CLI/CLI.hpp"
 #include "umbra/cli/ParseTransformValidator.hpp"
 #include "umbra/util/Parse.hpp"
+#include <functional>
 
 namespace umbra {
+
+using HookCallback = std::function<void()>;
+
+/**
+ * Contains details about a loaded module.
+ */
+struct LoadInfo {
+    /**
+     * Required: pointer to the CLI::App representing this module's root subcommand.
+     */
+    CLI::App* rootSubcommand;
+};
 
 class Module {
 protected:
@@ -24,10 +37,8 @@ public:
      * checking what ended up matching. This is suggested handled with `callback()`.
      *
      * \param app The app for the root umbra command
-     *
-     * \returns The root CLI::App* instance returned by add_subcommand.
      */
-    virtual CLI::App* onLoadCLI(CLI::App& app) = 0;
+    virtual LoadInfo onLoadCLI(CLI::App& app) = 0;
 
     /**
      * Whether or not the module is quiet by default.

@@ -13,7 +13,7 @@ ZellijModule::ZellijModule(const parse::CommonContext& ctx) : Module(parse::Pars
     .commonContext = ctx
 }) {}
 
-CLI::App* ZellijModule::onLoadCLI(CLI::App& app) {
+LoadInfo ZellijModule::onLoadCLI(CLI::App& app) {
     subcommand = app.add_subcommand("zellij");
     subcommand
         ->alias("z")
@@ -73,7 +73,9 @@ ENVIRONMENT VARIABLES:
         "evaluating the flags as part of umbra's argument parsing. See the USAGE section."
     );
 
-    return subcommand;
+    return {
+        .rootSubcommand = subcommand
+    };
 }
 
 void ZellijModule::moduleMain() {

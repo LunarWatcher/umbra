@@ -1,6 +1,7 @@
 #include "ModuleLoader.hpp"
 #include "umbra/except/ErrorCode.hpp"
 #include "umbra/except/Exception.hpp"
+#include <memory>
 #include <stc/Colour.hpp>
 
 #include "modules/include.hpp"
@@ -16,15 +17,15 @@ ModuleLoader::ModuleLoader() : app(
     app.require_subcommand(-1);
     std::vector<std::shared_ptr<Module>> modules = {
         CREATE_MODULE(ZellijModule)
-    };  
+    };
 
     for (auto& mod : modules) {
-        auto rootSubcommand = mod->onLoadCLI(app);
-        if (rootSubcommand == nullptr) {
+        auto loadInfo = mod->onLoadCLI(app);
+        if (loadInfo.rootSubcommand == nullptr) {
             [[unlikely]]
             throw std::runtime_error("Programmer error: onLoadCli returned nullptr");
         }
-        this->modules[rootSubcommand] = mod;
+        this->modules[loadInfo.rootSubcommand] = mod;
     }
 
     // TODO: optimally, this flag and the subcommand should be mutually exclusive

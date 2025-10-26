@@ -14,7 +14,7 @@ public:
     parse::CommonContext cc;
 
     std::map<
-        CLI::App* /* rootSubcommand */,
+        CLI::App* /* moduleRootSubcommand */,
         std::shared_ptr<Module>
     > modules;
 
