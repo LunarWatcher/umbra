@@ -4,7 +4,10 @@
 * **Implementation language:** C++
 * **Additional runtime requirements:** https://zellij.dev/
 * **Base command**: `umbra zellij`, `umbra z`
-* **Default alias:** N/A
+* **Command run without arguments:** `umbra zellij default.kdl`
+* **State:** alpha
+
+> `umbra zellij` is as utility command for managing repositories of Zellij layouts.
 
 ## Features
 
