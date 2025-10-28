@@ -13,6 +13,7 @@ option (UMBRA_SANITISE "Whether or not to enable -fsanitize=undefined" OFF)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(SHARED OFF)
+set(SPDLOG_USE_STD_FORMAT ON CACHE STRING "" FORCE)
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -Wno-c++11-narrowing")
 

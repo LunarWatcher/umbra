@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CLI/CLI.hpp"
-#include "umbra/except/ErrorCode.hpp"
 #include "umbra/modules/Module.hpp"
 #include "umbra/util/Parse.hpp"
 #include <memory>
@@ -26,7 +25,7 @@ public:
      * 
      * \returns an ErrorCode. ErrorCode::OK means no error, all other values means an error happened.
      */
-    ErrorCode parse(int argc, const char* argv[]);
+    int parse(int argc, const char* argv[]);
 };
 
 }

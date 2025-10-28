@@ -5,7 +5,7 @@
 * **Runtime requirements:** An interactive shell
 * **Base command:** `umbra devenv`, `umbra env`
 * **Command run without arguments:** `umbra env default`
-* **State:** Not implemented
+* **State:** alpha
 
 > `umbra devenv` is a utility command for loading and managing repo-specific configurations and environments.
 
@@ -14,6 +14,13 @@
 Will not work great in environments where POSIX-compliant and non-POSIX compliant shells are mixed, due to `.shell.devenv` being shared across shells. The only way to make this work portably without requiring multiple implementations is to standardise on POSIX-compliant shells, or standardise on specific non-compliant shells.
 
 Umbra does not enforce either approach.
+
+Additionally, only a few shells are supported. This is due to another set of hacks required to actually get the extra commands into the shell without requiring adding more stuff to your init files. This means the only supported shells are:
+
+* bash
+* zsh
+
+This is due to a major limitation in shells, where there is no way to run `-ic` and have the command run first, and then get dropped into a real interactive shell.
 
 ## Core functionality
 
@@ -77,6 +84,25 @@ envs:
 ```
 
 Environment files are always sourced before shell files, but don't have to be used with shell files. You can have a standalone environment file.
+
+
+## Lookup order and merging strategy
+
+By default, the lookup order is:
+
+1. `UMBRA_DEVENV_PRIVATE_SUBDIR` (default: `{{git_root}}/.git/devenv`; templates supported)
+2. `UMBRA_DEVENV_PUBLIC_SUBDIR` (default: `{{git_root}}/dev/devenv`; templates supported)
+
+Merging is only supported for environment files, where the loopup order is reversed; the public files are sourced first, and the private files last. This is to ensure that the more user-specific files can override anything set in the public files without requiring any advanced systems. 
+
+The shell files are looked up in this order, and only one file is sourced. However, you can manually source files from your private file should you wish to include the contents of the public file:
+```bash
+source $(git rev-parse --show-toplevel)/dev/devenv/.shell.devenv
+
+# Rest of the private .shell.devenv file goes here
+```
+
+However, this bypasses the security measures. The measures and why it bypasses them is described in the security section.
 
 ## Security
 

@@ -1,10 +1,10 @@
 #include "ModuleLoader.hpp"
-#include "umbra/except/ErrorCode.hpp"
 #include "umbra/except/Exception.hpp"
 #include <memory>
 #include <stc/Colour.hpp>
 
 #include "modules/include.hpp"
+#include "umbra/modules/DevenvModule.hpp"
 
 namespace umbra {
 ModuleLoader::ModuleLoader() : app(
@@ -16,7 +16,8 @@ ModuleLoader::ModuleLoader() : app(
                             )
     app.require_subcommand(-1);
     std::vector<std::shared_ptr<Module>> modules = {
-        CREATE_MODULE(ZellijModule)
+        CREATE_MODULE(ZellijModule),
+        CREATE_MODULE(DevenvModule),
     };
 
     for (auto& mod : modules) {
@@ -49,12 +50,12 @@ Code available on GitHub and Codeberg:
 * https://github.com/LunarWatcher/umbra)");
 }
 
-ErrorCode ModuleLoader::parse(int argc, const char* argv[]) {
+int ModuleLoader::parse(int argc, const char* argv[]) {
     try {
         (this->app).parse(argc, argv);
     } catch (const CLI ::ParseError &e) {
         (this->app).exit(e);
-        return ErrorCode::GENERIC_ERROR;
+        return 1;
     } catch(const Exception& e) {
         // TODO: exception handling for the custom exceptions could be a lot better than this, but I'm not currently
         // sure what I could add that's actually useful rather than just a gimmick
@@ -64,10 +65,10 @@ ErrorCode ModuleLoader::parse(int argc, const char* argv[]) {
             << "An error occurred. Message: "
             << stc::colour::reset;
         std::cerr << e.what() << std::endl;
-        return e.errorCode;
+        return 2;
     }
 
-    return ErrorCode::OK;
+    return 0;
 }
 
 }

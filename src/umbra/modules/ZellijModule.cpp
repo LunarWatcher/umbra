@@ -11,6 +11,9 @@ namespace umbra {
 
 ZellijModule::ZellijModule(const parse::CommonContext& ctx) : Module(parse::ParseContext {
     .commonContext = ctx
+}), lookupPaths({
+    getEnvWithTransform("UMBRA_ZELLIJ_PRIVATE_SUBDIR", "{{git_root}}/.git/zellij/"),
+    getEnvWithTransform("UMBRA_ZELLIJ_PUBLIC_SUBDIR", "{{git_root}}/dev/zellij/"),
 }) {}
 
 LoadInfo ZellijModule::onLoadCLI(CLI::App& app) {
@@ -74,7 +77,7 @@ ENVIRONMENT VARIABLES:
     );
 
     return {
-        .rootSubcommand = subcommand
+        .rootSubcommand = subcommand,
     };
 }
 

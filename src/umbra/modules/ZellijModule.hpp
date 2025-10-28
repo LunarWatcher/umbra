@@ -9,14 +9,15 @@ struct FilesystemLookupDescriptor {
 
 class ZellijModule : public Module {
 private:
+    std::vector<std::filesystem::path> lookupPaths;
+    CLI::App* subcommand;
+
+    // Config options {{{
     std::string layout;
     bool listLayouts;
-    std::vector<std::filesystem::path> lookupPaths = {
-        getEnvWithTransform("UMBRA_ZELLIJ_PRIVATE_SUBDIR", "{{git_root}}/.git/zellij/"),
-        getEnvWithTransform("UMBRA_ZELLIJ_PUBLIC_SUBDIR", "{{git_root}}/dev/zellij/"),
-    };
+
     std::vector<std::string> passthroughArgs;
-    CLI::App* subcommand;
+    // }}}
 
     void moduleMain();
 

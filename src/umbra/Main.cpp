@@ -12,6 +12,5 @@ int main(int argc, const char* argv[]) {
     spdlog::set_pattern("%^%8l%$ %v");
 #endif
 
-    auto errCode = loader.parse(argc, argv);
-    return static_cast<int>(errCode);
+    return loader.parse(argc, argv);
 }
