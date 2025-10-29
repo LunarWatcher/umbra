@@ -95,7 +95,7 @@ void DevenvModule::moduleMain() {
     } else if (this->list) {
         std::cout << "IOU 1x list command" << std::endl;
         return;
-    } else if (stc::getEnv("UMBRA_DEVENV_ENVIRONMENT") != "") {
+    } else if (!stc::getEnv("UMBRA_DEVENV_ENVIRONMENT").empty()) {
         throw Exception(
             "umbra devenv should NOT be nested. You're already in a session. If you'd like to run several "
             "sessions at once, consider a terminal multiplexer (I strongly recommend zellij, largely because you "

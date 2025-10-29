@@ -15,7 +15,14 @@ add_library(umbrasrc STATIC
 add_executable(
     umbra umbra/Main.cpp
 )
-target_link_libraries(umbrasrc PUBLIC stc CLI11::CLI11 spdlog::spdlog)
+target_link_libraries(
+    umbrasrc
+PUBLIC
+    stc
+    CLI11::CLI11
+    spdlog::spdlog
+    nlohmann_json::nlohmann_json
+)
 target_link_libraries(umbra PUBLIC umbrasrc)
 
 target_include_directories(umbrasrc PUBLIC ./)
