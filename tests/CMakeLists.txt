@@ -1,6 +1,7 @@
 add_executable(tests 
     src/modules/ZellijModuleTests.cpp
 
+    src/util/JSONCParserTests.cpp
     src/util/ParseTests.cpp
 
     src/Main.cpp

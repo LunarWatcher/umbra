@@ -15,6 +15,7 @@ private:
 
     bool trusted = false;
     bool list = false;
+    bool lint = false;
     // }}}
 public:
     DevenvModule(const parse::CommonContext& commonCtx);

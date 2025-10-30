@@ -7,6 +7,8 @@ add_library(umbrasrc STATIC
     umbra/modules/Module.cpp
     umbra/modules/ZellijModule.cpp
 
+    umbra/modules/devenv/ConfigSpec.cpp
+
     umbra/util/FilesystemExt.cpp
     umbra/util/Parse.cpp
 

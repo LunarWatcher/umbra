@@ -49,38 +49,45 @@ In an environment configuration, you can set specific shell variables that you c
 
 This is with one exception: `UMBRA_DEVENV_ENVIRONMENT`, which is set by umbra prior to shell execution. This always matches an environment declared in the `.env.devenv` file.
 
-The environment files are YAML files with umbra template support, but no code execution. For any dynamic variables you need, you'll need to set them in the `.shell.devenv`.
+The environment files are JSON files with umbra template support, but no code execution. For any dynamic variables you need, you'll need to set them in the `.shell.devenv`.
 
 Syntax:
-```yaml
-envs:
-  default:
-    # The default environment always exists, and is (shock) the default environment.
-    # It's the environment that's loaded if no environment is specified.
-    # If you'd like, you can alias this environment to another environment:
-    alias-for: test
-    # alias-for is ONLY valid for the default environment. It is ignored in all other environments.
-  # The following environment names are not special in any way, they're just used to demonstrate
-  # how umbra can work in a two-environment deployment system.
-  # You can name these whatever you want, as long as it's valid YAML
-  test:
-    # Used to declare variables. Note that this overrides variables if they exist
-    vars:
-      - VAULT_ADDR=https://test.<redacted>
-    # A separate key exists to append to an existing environment variable.
-    # It's assumed that this is a colon-separated list, similar to PATH.
-    append:
-      PATH:
-        - /usr/local/bin
-  prod:
-    vars:
-      # Technically, there's nothing preventing you from using ENV=prod instead, and
-      # then setting `export VAULT_ADDR=https://${ENV}.<redacted>` in your `.shell.devenv`,
-      # but this is just a basic example
-      - VAULT_ADDR=https://prod.<redacted>
-    append:
-      PATH:
-        - /usr/local/bin
+```jsonc
+{
+    // This file is a modified variant of jsonc, where only // comments are allowed, and
+    // they must be alone on a line. This is a limitation of the JSON parser used, and json comments
+    // being a preprocessor step.
+    "envs": {
+        "default": {
+            // The default environment always exists, and is (shock) the default environment.
+            // It's the environment that's loaded if no environment is specified.
+            // If you'd like, you can alias this environment to another environment:
+            "alias-for": "test"
+            // otherwise, all the same keys are supported as in other environments.
+        },
+        // The following environment names are not special in any way, they're just used to demonstrate
+        // how umbra can work in a two-environment deployment system.
+        // You can name these whatever you want, as long as it's valid YAML
+        "test": {
+            // Vars defines any environment variables you want included. These are not allowed
+            // to start with UMBRA_, as that is an umbra-reserved prefix. UMBRA_-variables are
+            // protected within these files and cannot be touched. Aside that, all variables
+            // are fair game.
+            // These override any existing environment variables, so make sure what you're overriding
+            // isn't critical to basic use of the shell (such as $PATH).
+            "vars": {
+                "VAULT_ADDR": "https://test.<redacted>"
+            },
+            // Similar to vars, but prepends instead of modifies. It's assumed the variables are
+            // colon-separated arrays.
+            "prepend": {
+                "PATH": [
+                    "/usr/local/bin"
+                ]
+            }
+        },
+    }
+}
 ```
 
 Environment files are always sourced before shell files, but don't have to be used with shell files. You can have a standalone environment file.
@@ -93,16 +100,9 @@ By default, the lookup order is:
 1. `UMBRA_DEVENV_PRIVATE_SUBDIR` (default: `{{git_root}}/.git/devenv`; templates supported)
 2. `UMBRA_DEVENV_PUBLIC_SUBDIR` (default: `{{git_root}}/dev/devenv`; templates supported)
 
-Merging is only supported for environment files, where the loopup order is reversed; the public files are sourced first, and the private files last. This is to ensure that the more user-specific files can override anything set in the public files without requiring any advanced systems. 
+Only one shell file is sourced. This is a feature meant to allow the shell files to contain semi-arbitrary startup logic that can be overridden in its entirety by adding a separate file. This will be changed in the future to allow both to be sourced and optionally picked if one of the two should be disabled, but this requires further ✨ magic ✨ research, as I don't yet know how this can be done compactly and with as little friction as possible.
 
-The shell files are looked up in this order, and only one file is sourced. However, you can manually source files from your private file should you wish to include the contents of the public file:
-```bash
-source $(git rev-parse --show-toplevel)/dev/devenv/.shell.devenv
-
-# Rest of the private .shell.devenv file goes here
-```
-
-However, this bypasses the security measures. The measures and why it bypasses them is described in the security section.
+For the env files, the lookup order is reversed, as all the files are included and merged through the resulting actions overriding previous actions. This avoids needing cursed merging algorithm shit, at the expense of some (but relatively speaking, extremely little) wasted compute. 
 
 ## Security
 

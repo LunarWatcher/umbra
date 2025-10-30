@@ -2,9 +2,14 @@
 #include "spdlog/spdlog.h"
 #include "stc/Environment.hpp"
 #include "umbra/except/Exception.hpp"
+#include "umbra/modules/devenv/ConfigSpec.hpp"
+
 #include "umbra/util/FilesystemExt.hpp"
+#include "umbra/util/JSONCParser.hpp"
 #include "umbra/util/Parse.hpp"
 #include "umbra/wranglers/Shell.hpp"
+#include <nlohmann/json.hpp>
+#include <ranges>
 
 namespace umbra {
 
@@ -120,15 +125,61 @@ void DevenvModule::moduleMain() {
         throw Exception("Found neither .env.devenv nor .shell.devenv");
     }
 
+
     if (envFile.empty() && this->environment != "default") {
         throw Exception(".env.devenv is missing, but using a non-default environment. Cannot continue");
     } else if (envFile.empty()) {
         spdlog::warn(".env.devenv is missing. The environment will not be modified");
+    }
+
+    std::vector<devenv::ConfigSpec> configFiles;
+    for (auto& file : envFile) {
+        spdlog::debug("Now loading {}", file.string());
+        std::ifstream f(file);
+        if (!f) {
+            spdlog::error("{} exists, but could not be opened", file.string());
+            continue;
+        }
+        devenv::ConfigSpec spec = parseJsonC(f).get<devenv::ConfigSpec>();
+        configFiles.push_back(
+            spec
+        );
+    }
+
+    if (!configFiles.empty()) {
+        auto legalEnvs = std::ranges::to<std::vector>(
+            configFiles
+            | std::views::transform([](const auto& confSpec) {
+                return std::ranges::to<std::vector<std::string>>(
+                    confSpec.envs | std::views::keys
+                );
+            })
+            | std::views::join
+        );
+
+        if (std::find(legalEnvs.begin(), legalEnvs.end(), environment) == legalEnvs.end()) {
+            spdlog::error(
+                "The provided environment ({}) is not valid. Legal values: {}",
+                environment,
+                std::ranges::to<std::string>(std::views::join_with(legalEnvs, ", "))
+            );
+            throw Exception("Failed to resolve environment");
+        }
     } else {
-        // TODO: validate env
+        if (!envFile.empty()) {
+            throw Exception("Found .env files, but failed to load any; aborting");
+        }
+
+        if (environment != "default") {
+            throw Exception("Only the default environment is allowed when no config files exist");
+        }
     }
 
     stc::setEnv("UMBRA_DEVENV_ENVIRONMENT", environment.c_str());
+
+    for (auto& configSpec : configFiles) { // NOLINT
+        spdlog::info("IOU 1x env file loading system");
+    }
 
     ShellWrangler wrangler;
     std::vector<const char*> command = {

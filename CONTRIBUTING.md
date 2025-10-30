@@ -67,7 +67,7 @@ Currently, the following four dependencies are used:
 * [CLI11](https://github.com/CLIUtils/CLI11) for command-line parsing
 * [stc](https://github.com/LunarWatcher/stc) for multiple common utils
 * [spdlog](https://github.com/gabime/spdlog) for logging, because I didn't feel like implementing global state management to also shut the logger up when necessary when it has already been done
-* PLANNED: at least a library for JSON, and possibly one for YAML. To be determined
+* [nlohmann/json](https://github.com/nlohmann/json) for user config and data storage
 
 All other dependencies are exclusively runtime-dependencies that are only ever attempted used if the user uses a corresponding command. This is preferred over linking, as anything that could force a recompilation to use certain modules is undesirable. One functionally identical binary should always be produced regardless of what optional dependencies are in the compiling user's PATH.
 
