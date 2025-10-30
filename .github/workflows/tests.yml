@@ -34,7 +34,7 @@ jobs:
       - name: Install deps
         run: |
           apt update && apt upgrade -y
-          apt install -y cmake gcc build-essential make git
+          apt install -y cmake gcc build-essential make git clang-tidy
       - name: Print environment
         run: |
           cmake --version
