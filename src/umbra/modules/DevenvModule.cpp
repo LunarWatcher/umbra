@@ -100,6 +100,9 @@ void DevenvModule::moduleMain() {
     } else if (this->list) {
         std::cout << "IOU 1x list command" << std::endl;
         return;
+    } else if (this->lint) {
+        std::cout << "IOU 1x lint command" << std::endl;
+        return;
     } else if (!stc::getEnv("UMBRA_DEVENV_ENVIRONMENT").empty()) {
         throw Exception(
             "umbra devenv should NOT be nested. You're already in a session. If you'd like to run several "
