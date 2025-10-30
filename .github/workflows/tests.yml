@@ -7,7 +7,7 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-24.04
-    image: ubuntu:rolling
+    container: ubuntu:rolling
     steps:
       - uses: actions/checkout@main
       - name: Install deps
@@ -28,7 +28,7 @@ jobs:
           cmake --build . --target test
   lint:
     runs-on: ubuntu-24.04
-    image: ubuntu:rolling
+    container: ubuntu:rolling
     steps:
       - uses: actions/checkout@main
       - name: Install deps
