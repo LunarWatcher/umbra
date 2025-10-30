@@ -12,8 +12,8 @@ jobs:
       - uses: actions/checkout@main
       - name: Install deps
         run: |
-          sudo apt update && sudo apt upgrade -y
-          sudo apt install -y cmake
+          apt update && sudo apt upgrade -y
+          apt install -y cmake
       - name: Print environment
         run: |
           cmake --version
@@ -33,8 +33,8 @@ jobs:
       - uses: actions/checkout@main
       - name: Install deps
         run: |
-          sudo apt update && sudo apt upgrade -y
-          sudo apt install -y cmake
+          apt update && sudo apt upgrade -y
+          apt install -y cmake
       - name: Print environment
         run: |
           cmake --version
