@@ -14,6 +14,9 @@ jobs:
           apt update && apt upgrade -y
           apt install -y cmake gcc build-essential make git
       - uses: actions/checkout@main
+      - name: Fix git ownership
+        run: |
+          git config --global --add safe.directory $(pwd)
       - name: Print environment
         run: |
           cmake --version
@@ -35,6 +38,9 @@ jobs:
           apt update && apt upgrade -y
           apt install -y cmake gcc build-essential make git clang-tidy
       - uses: actions/checkout@main
+      - name: Fix git ownership
+        run: |
+          git config --global --add safe.directory $(pwd)
       - name: Print environment
         run: |
           cmake --version
