@@ -9,11 +9,11 @@ jobs:
     runs-on: ubuntu-24.04
     container: ubuntu:rolling
     steps:
-      - uses: actions/checkout@main
       - name: Install deps
         run: |
           apt update && apt upgrade -y
           apt install -y cmake gcc build-essential make git
+      - uses: actions/checkout@main
       - name: Print environment
         run: |
           cmake --version
@@ -30,11 +30,11 @@ jobs:
     runs-on: ubuntu-24.04
     container: ubuntu:rolling
     steps:
-      - uses: actions/checkout@main
       - name: Install deps
         run: |
           apt update && apt upgrade -y
           apt install -y cmake gcc build-essential make git clang-tidy
+      - uses: actions/checkout@main
       - name: Print environment
         run: |
           cmake --version
