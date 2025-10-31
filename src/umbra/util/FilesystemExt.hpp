@@ -6,6 +6,11 @@
 
 namespace umbra::util {
 
+struct FilesystemLookupDescriptor {
+    std::filesystem::path folder;
+    std::vector<std::string> contents;
+};
+
 extern std::optional<std::string> getGitRoot();
 /**
  * Does a lookup on the provided paths. 
@@ -17,6 +22,10 @@ extern std::vector<std::filesystem::path> findMatchesInPaths(
     const std::vector<std::filesystem::path>& paths,
     const std::vector<std::string>& filenames,
     bool stopAfterFirst = false
+);
+
+extern std::vector<FilesystemLookupDescriptor> listDirectoryPaths(
+    const std::vector<std::filesystem::path>& lookupPaths
 );
 
 }

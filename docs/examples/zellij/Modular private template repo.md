@@ -4,7 +4,7 @@ While committing things directly to repos works, it's not great if you plan to w
 
 In your `.profile` or `.zprofile`, you can set
 ```bash
-export $UMBRA_ZELLIJ_PRIVATE_SUBDIR=/path/to/your/private/template/repo/{{curr_folder}}
+export $UMBRA_ZELLIJ_PRIVATE_SUBDIR=/path/to/your/private/template/repo/{{curr_folder_name}}
 ```
 Where the contents of your template repo is
 ```

@@ -1,8 +1,12 @@
 add_executable(tests 
+    src/modules/DevenvModuleTests.cpp
     src/modules/ZellijModuleTests.cpp
 
     src/util/JSONCParserTests.cpp
     src/util/ParseTests.cpp
+
+    # Meta tests
+    src/testutil/selftest/EnvTests.cpp
 
     src/Main.cpp
 )

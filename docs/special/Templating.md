@@ -37,7 +37,8 @@ Standard identifiers are built-in and manually supported identifiers. Using them
 | Identifier | Description | Expected value | Fallback value | Aborts |
 | --- | --- | --- | --- | --- |
 | `git_root` | Path to the Git root | `/path/to/git/repo` | `./` if not in a git repo | If the `git` executable is not found. |
-| `curr_folder` | Name of the folder in the working directory | `working_dir` for `/path/to/working_dir` | - | - |
+| `curr_folder_name` | Name of the folder in the working directory | `working_dir` for `/path/to/working_dir` | - | - |
+| `cwd` | Current working directory | `/path/to/working/dir` | - | - |
 
 
 ### Environment variables [not implemented, may not be implemented]

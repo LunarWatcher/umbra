@@ -1,6 +1,7 @@
 #pragma once
 
 #include "umbra/modules/Module.hpp"
+#include "umbra/modules/devenv/ConfigSpec.hpp"
 
 namespace umbra {
 
@@ -17,12 +18,23 @@ private:
     bool list = false;
     bool lint = false;
     // }}}
+    
 public:
     DevenvModule(const parse::CommonContext& commonCtx);
 
     LoadInfo onLoadCLI(CLI::App& app) override;
 
     void moduleMain();
+    void printList();
+
+    void loadEnvironment(
+        const devenv::ConfigSpec& spec,
+        const std::string& inputEnvironment
+    );
+    std::string resolveEnvironment(
+        const devenv::ConfigSpec& mainSpec,
+        const std::string& inputEnvironment
+    );
 };
 
 }

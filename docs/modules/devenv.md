@@ -104,6 +104,17 @@ Only one shell file is sourced. This is a feature meant to allow the shell files
 
 For the env files, the lookup order is reversed, as all the files are included and merged through the resulting actions overriding previous actions. This avoids needing cursed merging algorithm shit, at the expense of some (but relatively speaking, extremely little) wasted compute. 
 
+### Alias priority
+
+As shown in the configuration syntax, the default environment can have an `alias-for` key to point it to another environment. However, there are two conflicting scenarios:
+
+1. Either the public or private file aliases, while the other defines it to something special
+2. Both the files alias them to different environments
+
+Both of these are handled identically: the private file takes priority, and the other is disregarded.
+
+If the private file declares that `default` is an alias, it's aliased. If the private file declares it's a full environment, it's a full environment.
+
 ## Security
 
 This module goes through all potential files, and sources them all. This means there's attack vectors going via the files. 
@@ -120,6 +131,14 @@ To deal with this, devenv has the following security strategy:
 
 > [!warning]
 > Umbra only addresses the first level, and does not scan for other imported files. If the shell script `source`s a file that's then changed, reapproval is not triggered. If you're running scripts from sources so untrusted you're not sure if you can trust hops from your main shell file, you probably need to reconsider your security model.
+
+## Supported input environment variables
+
+This list describes the variables devenv uses for input. 
+
+* `SHELL` (default: none; must be set by the shell): used to determine what shell to spawn. This is also a standard variable set in many (all?) shells, so it's recommended you override it per command rather than with an `export`, for example `SHELL=$(which bash) umbra devenv`. It's recommended to use the `--shell` flag instead, which doesn't require a path: `umbra devenv -s bash`
+* `UMBRA_DEVENV_PRIVATE_SUBDIR` (default: `{{git_root}}/.git/devenv`; templates supported): see [lookup order and merging strategy](#lookup-order-and-merging-strategy)
+* `UMBRA_DEVENV_PUBLIC_SUBDIR` (default: `{{git_root}}/dev/devenv`; templates supported): see [lookup order and merging strategy](#lookup-order-and-merging-strategy)
 
 ## Examples
 

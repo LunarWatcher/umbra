@@ -2,11 +2,6 @@
 
 namespace umbra {
 
-struct FilesystemLookupDescriptor {
-    std::filesystem::path folder;
-    std::vector<std::string> contents;
-};
-
 class ZellijModule : public Module {
 private:
     std::vector<std::filesystem::path> lookupPaths;
@@ -35,7 +30,6 @@ public:
      *
      */
     std::string resolvePathFromName(const std::string& name);
-    std::vector<FilesystemLookupDescriptor> listLayoutsAndDirs();
 };
 
 }

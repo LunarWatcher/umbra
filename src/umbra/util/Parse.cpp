@@ -40,8 +40,10 @@ std::string parse::parse(const std::string& in, const ParseContext& context) {
                 } else {
                     out << gitRoot.value();
                 }
-            } else if (contents == "curr_folder") {
+            } else if (contents == "curr_folder_name") {
                 out << std::filesystem::current_path().filename().string();
+            } else if (contents == "cwd") {
+                out << std::filesystem::current_path().string();
             } else {
                 throw TemplateException(
                     std::format("Invalid template used: {}", contents)

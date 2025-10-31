@@ -1,7 +1,6 @@
 #include "FilesystemExt.hpp"
 #include "spdlog/spdlog.h"
 #include <filesystem>
-#include <iostream>
 #include <vector>
 
 namespace umbra {
@@ -43,6 +42,31 @@ std::vector<std::filesystem::path> util::findMatchesInPaths(
         }
     }
 stop:
+    return out;
+}
+
+std::vector<util::FilesystemLookupDescriptor> util::listDirectoryPaths(
+    const std::vector<std::filesystem::path>& lookupPaths
+) {
+    std::vector<FilesystemLookupDescriptor> out;
+    for (auto& dir : lookupPaths) {
+        FilesystemLookupDescriptor desc = {
+            .folder = dir,
+            .contents = {}
+        };
+        if (std::filesystem::exists(dir)) {
+            for (auto& path : std::filesystem::directory_iterator(dir)) {
+                if (std::filesystem::is_directory(path)) {
+                    continue;
+                }
+
+                desc.contents.push_back(
+                    std::filesystem::relative(path.path(), dir).string()
+                );
+            }
+        }
+        out.push_back(desc);
+    }
     return out;
 }
 

@@ -48,6 +48,18 @@ USAGE:
 
   # List available environments, along with where they're defined
   umbra env --list
+
+LOOKUP ORDER:
+  1. $UMBRA_DEVENV_PRIVATE_SUBDIR
+  2. $UMBRA_DEVENV_PUBLIC_SUBDIR
+
+  EXCEPT:
+    1. The first matching `.shell.devenv` is loaded, while the rest are ignored
+    2. `.env.devenv` is loaded in the opposite order, so the private files take priority over public files.
+
+ENVIRONMENT VARIABLES:
+  * `UMBRA_DEVENV_PRIVATE_SUBDIR` (default: `{{git_root}}/.git/devenv`; templates supported)
+  * `UMBRA_DEVENV_PUBLIC_SUBDIR` (default: `{{git_root}}/dev/devenv`; templates supported)
 )");
 
     autoConfVerbosity(subcommand);
@@ -98,7 +110,7 @@ void DevenvModule::moduleMain() {
     if (shell == "__fail__") {
         throw Exception("Failed to identify shell to run");
     } else if (this->list) {
-        std::cout << "IOU 1x list command" << std::endl;
+        printList();
         return;
     } else if (this->lint) {
         std::cout << "IOU 1x lint command" << std::endl;
@@ -149,6 +161,15 @@ void DevenvModule::moduleMain() {
         );
     }
 
+    std::string environment = configFiles.size() == 0 ? this->environment : resolveEnvironment(
+        configFiles.at(0), this->environment
+    );
+    spdlog::info(
+        "Resolved environment to {} (aliased: {})",
+        environment,
+        environment != this->environment ? "yes" : "no"
+    );
+
     if (!configFiles.empty()) {
         auto legalEnvs = std::ranges::to<std::vector>(
             configFiles
@@ -181,7 +202,10 @@ void DevenvModule::moduleMain() {
     stc::setEnv("UMBRA_DEVENV_ENVIRONMENT", environment.c_str());
 
     for (auto& configSpec : configFiles) { // NOLINT
-        spdlog::info("IOU 1x env file loading system");
+        loadEnvironment(
+            configSpec, 
+            environment
+        );
     }
 
     ShellWrangler wrangler;
@@ -203,6 +227,80 @@ void DevenvModule::moduleMain() {
         sourceCmd.str()
     );
 
+}
+
+void DevenvModule::loadEnvironment(
+    const devenv::ConfigSpec& spec,
+    const std::string& environment
+) {
+    auto& env = spec.envs.at(environment);
+    for (const auto& [k, v] : env.vars) {
+        stc::setEnv(k.c_str(), parse::parse(v, this->parseCtx).c_str());
+    }
+    for (const auto& [k, vals] : env.prepend) {
+        std::string existing = stc::getEnv(k.c_str());
+        std::stringstream ss;
+        for (auto& val : vals) {
+            if (ss.tellp() > 0) {
+                ss << ":";
+            }
+            ss << parse::parse(val, this->parseCtx);
+        }
+        if (ss.tellp() > 0 && !existing.empty()) {
+            ss << ":" << existing;
+        }
+        stc::setEnv(
+            k.c_str(), 
+            ss.str().c_str()
+        );
+    }
+}
+
+std::string DevenvModule::resolveEnvironment(
+    const devenv::ConfigSpec& mainSpec,
+    const std::string& inputEnvironment
+) {
+    if (inputEnvironment == "default") {
+        return mainSpec.envs.at(inputEnvironment).aliasFor.value_or(inputEnvironment);
+    } else {
+        return inputEnvironment;
+    }
+
+}
+
+void DevenvModule::printList() {
+    std::cout 
+        << "Note that the source order is reversed for .env.devenv files, and only the topmost shell file is sourced "
+        << "directly by umbra. See the documentation (or --help) for more information."
+        << std::endl;
+    auto list = util::listDirectoryPaths(this->lookups);
+
+    for (auto& [dir, files] : list) {
+        std::cout << dir.string() << std::endl;
+        bool hasContents = false;
+        for (const auto& file : files) {
+            if (!file.ends_with(".devenv")) {
+                continue;
+            }
+
+            if (file == ".env.devenv" || file == ".shell.devenv") {
+                hasContents = true;
+                std::cout << "\t" << file;
+                if (file.starts_with(".env")) {
+                    std::cout << " [env file]";
+                } else {
+                    std::cout << " [shell file]";
+                }
+                std::cout << " [trusted: " << "not implemented" << "]" << std::endl;
+
+            }
+        }
+
+        if (!hasContents) {
+            std::cout << "\tNo config files found" << std::endl;
+        }
+        std::cout << "\n\n";
+    }
 }
 
 }

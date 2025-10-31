@@ -3,7 +3,7 @@
 | Module name | Short description | Doc link | 
 | --- | --- | --- |
 | `zellij` | Enables some extra per-directory and scoping functionality not present in zellij proper | [modules/zellij.md](modules/zellij.md) |
-| `devenv` | Sources per-repository environments and/or entire extra s hell configurations | [modules/devenv.md](modules/devenv.md) |
+| `devenv` | Sources per-repository environments and/or entire extra shell configurations | [modules/devenv.md](modules/devenv.md) |
 
 The rest of this doc page is dedicated to clarifying things about modules in general, as well as terminology used in the documentation.
 
