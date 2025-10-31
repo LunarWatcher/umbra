@@ -36,8 +36,9 @@ public:
         const std::string& inputEnvironment
     );
 
-    std::vector<std::string> getLegalEnvironments(
-        const std::vector<devenv::ConfigSpec>& specFiles
+    std::set<std::string> getLegalEnvironments(
+        const std::vector<devenv::ConfigSpec>& specFiles,
+        bool flattenAliases = true
     );
 
     std::vector<std::filesystem::path> loadShellPaths();

@@ -261,7 +261,7 @@ void DevenvModule::printList() {
                     try {
                         auto spec = loadConfigFile(dir / file);
                         if (spec.has_value()) {
-                            auto envs = getLegalEnvironments({spec.value()});
+                            auto envs = getLegalEnvironments({spec.value()}, false);
                             std::cout << "\t    Declared environments: "
                                 << std::ranges::to<std::string>(
                                     std::views::join_with(envs, ", ")
@@ -285,24 +285,39 @@ void DevenvModule::printList() {
             std::cout << "All available environments: " << std::ranges::to<std::string>(
                 std::views::join_with(allEnvs, ", ")
             ) << std::endl;
+
         }
     }
 }
 
-std::vector<std::string> DevenvModule::getLegalEnvironments(
-    const std::vector<devenv::ConfigSpec>& specFiles
+std::set<std::string> DevenvModule::getLegalEnvironments(
+    const std::vector<devenv::ConfigSpec>& specFiles,
+    bool flattenAliases
 ) {
-    // TODO: probably worth using an std::set, and resolving aliases here. This will likely break moduleMain if my
-    // sleepy brain correctly remembers how it's set up
-    return std::ranges::to<std::vector>(
-        specFiles
-        | std::views::transform([](const auto& confSpec) {
-            return std::ranges::to<std::vector<std::string>>(
-                confSpec.envs | std::views::keys
-            );
-        })
-        | std::views::join
-    );
+    std::set<std::string> out;
+    for (auto& confSpec : specFiles) {
+        for (const auto& key : confSpec.envs | std::views::keys) {
+            if (key == "default") {
+
+                auto alias = confSpec.envs
+                    .at(key)
+                    .aliasFor
+                    .value_or(key);
+                if (alias == key || flattenAliases) {
+                    out.insert(alias); // not aliased (key == alias), or flattening is enabled (key -> alias[target])
+
+                } else {
+                    out.insert(
+                        key + " -> " + alias
+                    );
+                }
+            } else {
+                out.insert(key);
+            }
+        }
+    }
+
+    return out;
 }
 
 std::optional<devenv::ConfigSpec> DevenvModule::loadConfigFile(const std::filesystem::path& file) {
