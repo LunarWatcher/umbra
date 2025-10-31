@@ -121,7 +121,7 @@ While `PATH` is used in the above example, the injection isn't guaranteed to ens
 I'd like to change this at some point, but I can't agree with myself on the syntax, so I'm deprioritising it for now. in the meanwhile, you can specify an environment variable, for example[^1]:
 ```jsonc
 "vars": {
-    "PATH_PREPEND": "{{cwd}}/build/bin"
+    "PATH_PREPEND": "{{git_root}}/build/bin"
 }
 ```
 
