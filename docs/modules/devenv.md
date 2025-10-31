@@ -182,4 +182,20 @@ This list describes the variables devenv uses for input.
 
 ## Examples
 
-TBA
+### p10k integration
+
+There's no built-in support for umbra, but you can always add your own. In your `.p10k.zsh`:
+```zsh
+function prompt_umbra() {
+    if [[ "$UMBRA_DEVENV_ENVIRONMENT" == "" ]]; then
+        return
+    fi
+    p10k segment -t "umbra:$UMBRA_DEVENV_ENVIRONMENT" -b purple
+}
+...
+  typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
+    # ...
+    umbra
+    # ...
+  )
+```
