@@ -308,7 +308,7 @@ std::set<std::string> DevenvModule::getLegalEnvironments(
 
                 } else {
                     out.insert(
-                        key + " -> " + alias
+                        key + " -> " + alias // NOLINT
                     );
                 }
             } else {
