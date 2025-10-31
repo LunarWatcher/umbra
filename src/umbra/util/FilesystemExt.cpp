@@ -14,7 +14,7 @@ std::optional<std::string> util::getGitRoot() {
         "--show-toplevel"
     }, &code);
     if (code != 0) {
-        spdlog::error("Failed to load git root: {}", stdout);
+        spdlog::error("Failed to load git root: {}. `{{git_root}}` templates will default to ./ instead.", stdout);
         return std::nullopt;
     }
     stdout.erase(

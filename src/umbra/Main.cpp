@@ -2,7 +2,6 @@
 #include "umbra/ModuleLoader.hpp"
 
 int main(int argc, const char* argv[]) {
-    umbra::ModuleLoader loader;
 
 #ifdef UMBRA_DEBUG
     spdlog::set_level(spdlog::level::debug);
@@ -12,5 +11,6 @@ int main(int argc, const char* argv[]) {
     spdlog::set_pattern("%^%8l%$ %v");
 #endif
 
+    umbra::ModuleLoader loader;
     return loader.parse(argc, argv);
 }
