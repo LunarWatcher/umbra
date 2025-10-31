@@ -89,4 +89,16 @@ For scripters, this means:
 * If the exit code is 0, the `stdout` (if any) can be used for further scripting
 * If the exit code is non-zero, the `stderr` will (likely[^1]) contain an error message that can be forwarded to the script's users or script's own logging
 
+### Using umbra to develop umbra
+
+Whereever possible, umbra features should have dogfood variants within umbra itself. This lets the features be tested better, and potentially in the future, automatically tested with integration tests once I figure out how to sanely do that. (If you know of any decent CLI integration test libraries in C++, or libraries that can be hacked into such tests, open an issue)
+
+#### devenv
+If you have umbra installed externally or have it built, you can run `umbra env` to get some utility commands. The two supported environments are `debug` and `release`.
+
+These are:
+
+* `setup` - equivalent to the setup instructions. This respects the 
+* `clean-setup` - nukes the build directory, then runs setup
+
 [^1]: The error handling used in umbra uses custom exceptions, but not all errors are going to use these. How non-caught exceptions are logged (if at all) is a wildcard.

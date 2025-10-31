@@ -39,7 +39,7 @@ jobs:
           mkdir dist/share/umbra
 
           cp build/bin/umbra dist/bin
-          cp -r shell/** dist/share/umbra
+          cp -r share dist/
       - name: Compress distribution
         run: |
           tar -cvzf umbra.tar.gz dist/*
