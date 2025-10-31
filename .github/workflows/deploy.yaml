@@ -12,12 +12,16 @@ permissions:
 jobs:
   assemble:
     runs-on: ubuntu-24.04
+    container: ubuntu:rolling
     steps:
-      - uses: actions/checkout@main
       - name: Install deps
         run: |
-          sudo apt update && sudo apt upgrade -y
-          sudo apt install -y cmake
+          apt update && apt upgrade -y
+          apt install -y cmake gcc build-essential make git
+      - uses: actions/checkout@main
+      - name: Fix git ownership
+        run: |
+          git config --global --add safe.directory $(pwd)
       - name: Print environment
         run: |
           cmake --version
