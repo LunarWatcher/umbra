@@ -39,6 +39,28 @@ Umbra sets some special environment variables that can be used within the script
 * `UMBRA_DEVENV_ENVIRONMENT`: defaults to `default`, corresponds to an environment in the `.env.devenv` file corresponding to the scope of the file. Can be used to control how to set dynamic variables that can't be set in an environment file due to computational requirements.
 * `UMBRA_DEVENV_SCOPE_PATH`: The scope path pointing to the current directory containing the sourced file. Can be used to construct paths to other scripts to source.
 
+#### Technical: How shell setup works
+
+To be more explicit about the  details in from the limtations section, not a single shell supports  `-ic` where the shell actually goes interactive after the command executes. As a result, an injection system had to be set up. This is done per shell. However, in all cases, the `.shell.devenv` is sourced AFTER all other shell files.
+
+The `.*rc` files can be found [in the `shell/wrangler` directory](https://github.com/LunarWatcher/umbra/tree/master/shell/wrangler) if you're interested in per-shell details.
+
+<details>
+  <summary>Very technical details</summary>
+  <div>
+  There's functionally an injection system, where a custom `.bashrc`/`.zshrc` is loaded. It then loads the shell's built-in files as usual, and then loads umbra. 
+
+  There's no way to do this portably, because there's no standard for even changing which `.rc` file you want to launch from, much less appending files or individual commands. This means it's handled on a per-shell basis:
+
+  1. Bash sets `--init-file`
+  2. Zsh overrides `ZDOTDIR`
+
+  In both cases, the method changes where the files are sourced from. Note that with zsh, `ZDOTDIR` is restored after the wrangler zshrc is loaded, and if `ZDOTDIR` is set prior to umbra's launch, umbra respects it when sourcing the presumably correct user configuration files.
+
+  Because the wrangler rc files have to manually source the relevant files from the shell though, there are a few sources of error. There's no guarantee the behaviour of these files line up with what the shell actually does, because I'm basing it on spending a whole 5 minutes reading the relevant documentation. YMMV, open an issue if shit doesn't work the way you expect.
+  </div>
+</details>
+
 ### Environment files
 
 Environment files (`.env.devenv`) can be used to control the details of what the shell files do. If you want to provide several configurations of a shell file, that's done with an environment. 
@@ -92,6 +114,24 @@ Syntax:
 
 Environment files are always sourced before shell files, but don't have to be used with shell files. You can have a standalone environment file.
 
+#### `prepend`-limitations with `PATH`, and setup order for environment variables
+
+While `PATH` is used in the above example, the injection isn't guaranteed to ensure that your additions are the first `PATH` components. This is a consequence of the environment variables being sourced before the shell's built-in config files, so any configurations in the user's `.*rc` files can shadow the additions made in the `.env.devenv`. 
+
+I'd like to change this at some point, but I can't agree with myself on the syntax, so I'm deprioritising it for now. in the meanwhile, you can specify an environment variable, for example[^1]:
+```jsonc
+"vars": {
+    "PATH_PREPEND": "{{cwd}}/build/bin"
+}
+```
+
+And then, in your `.shell.devenv`, you modify the path:
+
+```shell
+export PATH="${PATH_PREPEND}:${PATH}"
+```
+
+As noted in the section for  the `.shell.devenv` file, this works because `.shell.devenv` is sourced after the shell `.*rc` files.
 
 ## Lookup order and merging strategy
 

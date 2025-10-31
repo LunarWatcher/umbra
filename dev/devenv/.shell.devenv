@@ -4,3 +4,6 @@ setup() {
     cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DUMBRA_LINT=ON
     make -j $(nproc)
 }
+
+export PATH="${PATH_PREPEND}:${PATH}"
+# vim:ft=sh
