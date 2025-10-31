@@ -9,14 +9,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        compiler: [clang, g++]
+        - compiler: clang
+          cxx: clang++
+          cc: clang
+        - compiler: g++
+          cxx: g++
+          cc: gcc
     runs-on: ubuntu-24.04
     container: ubuntu:rolling
     steps:
       - name: Install deps
         run: |
           apt update && apt upgrade -y
-          apt install -y cmake gcc build-essential make git
+          apt install -y cmake build-essential make git
+          apt install -y ${{ matrix.compiler }}
+
+      - name: Environment information
+        run: |
+          ${{ matrix.compiler }} -v
       - uses: actions/checkout@main
       - name: Fix git ownership
         run: |
@@ -29,10 +39,16 @@ jobs:
           mkdir build && cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release
           make -j $(nproc)
+        env:
+          CXX: ${{ matrix.cxx }}
+          CC: ${{ matrix.cc }}
       - name: Run test
         run: |
           cd build
-          cmake --build . --target test
+          make -j $(nproc) test
+        env:
+          CXX: ${{ matrix.cxx }}
+          CC: ${{ matrix.cc }}
   lint:
     runs-on: ubuntu-24.04
     container: ubuntu:rolling
