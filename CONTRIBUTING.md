@@ -91,7 +91,9 @@ For scripters, this means:
 
 ### Using umbra to develop umbra
 
-Whereever possible, umbra features should have dogfood variants within umbra itself. This lets the features be tested better, and potentially in the future, automatically tested with integration tests once I figure out how to sanely do that. (If you know of any decent CLI integration test libraries in C++, or libraries that can be hacked into such tests, open an issue)
+Whereever possible, umbra features should have dogfood variants within umbra itself. This lets the features be tested better, and potentially in the future, automatically tested with integration tests once I figure out how to sanely do that. (If you know of any decent CLI integration test libraries in C++, or libraries that can be hacked into such tests, open an issue).
+
+Actually using it is optional, but strongly recommended if you're interested in being a long-term contributor.
 
 #### devenv
 If you have umbra installed externally or have it built, you can run `umbra env` to get some utility commands. The two supported environments are `debug` and `release`.
@@ -100,5 +102,9 @@ These are:
 
 * `setup` - equivalent to the setup instructions. This respects the 
 * `clean-setup` - nukes the build directory, then runs setup
+
+#### zellij
+
+A standard layout is provided that pretty much just runs the tests. It can be used from within `devenv`, which currently works as a way to get around the lack of proper pipelines in zellij. This is hopefully coming soon, at which point the exact relation to devenv will likely change. How is TBA
 
 [^1]: The error handling used in umbra uses custom exceptions, but not all errors are going to use these. How non-caught exceptions are logged (if at all) is a wildcard.

@@ -9,6 +9,7 @@
 #include "umbra/util/Parse.hpp"
 #include "umbra/wranglers/Shell.hpp"
 #include <nlohmann/json.hpp>
+#include <optional>
 #include <ranges>
 
 namespace umbra {
@@ -122,45 +123,20 @@ void DevenvModule::moduleMain() {
             "can write layouts containing commands to invoke all the umbra sessions you want)"
         );
     }
-    std::vector<std::filesystem::path> envLookups = lookups;
-    std::reverse(envLookups.begin(), envLookups.end());
-
-    auto shellFile = util::findMatchesInPaths(
-        lookups,
-        { ".shell.devenv" },
-        true
-    );
-    auto envFile = util::findMatchesInPaths(
-        envLookups,
-        { ".env.devenv" },
-        false
-    );
+    auto shellFile = loadShellPaths();
+    auto envFile = loadEnvPaths();
 
     if (shellFile.empty() && envFile.empty()) {
         throw Exception("Found neither .env.devenv nor .shell.devenv");
-    }
-
-
-    if (envFile.empty() && this->environment != "default") {
+    } else if (envFile.empty() && this->environment != "default") {
         throw Exception(".env.devenv is missing, but using a non-default environment. Cannot continue");
     } else if (envFile.empty()) {
         spdlog::warn(".env.devenv is missing. The environment will not be modified");
     }
 
-    std::vector<devenv::ConfigSpec> configFiles;
-    for (auto& file : envFile) {
-        spdlog::debug("Now loading {}", file.string());
-        std::ifstream f(file);
-        if (!f) {
-            spdlog::error("{} exists, but could not be opened", file.string());
-            continue;
-        }
-        devenv::ConfigSpec spec = parseJsonC(f).get<devenv::ConfigSpec>();
-        configFiles.push_back(
-            spec
-        );
-    }
-
+    auto configFiles = loadConfigFiles(
+        envFile
+    );
     std::string environment = configFiles.size() == 0 ? this->environment : resolveEnvironment(
         configFiles.at(0), this->environment
     );
@@ -171,16 +147,7 @@ void DevenvModule::moduleMain() {
     );
 
     if (!configFiles.empty()) {
-        auto legalEnvs = std::ranges::to<std::vector>(
-            configFiles
-            | std::views::transform([](const auto& confSpec) {
-                return std::ranges::to<std::vector<std::string>>(
-                    confSpec.envs | std::views::keys
-                );
-            })
-            | std::views::join
-        );
-
+        auto legalEnvs = getLegalEnvironments(configFiles);
         if (std::find(legalEnvs.begin(), legalEnvs.end(), environment) == legalEnvs.end()) {
             spdlog::error(
                 "The provided environment ({}) is not valid. Legal values: {}",
@@ -189,14 +156,10 @@ void DevenvModule::moduleMain() {
             );
             throw Exception("Failed to resolve environment");
         }
-    } else {
-        if (!envFile.empty()) {
-            throw Exception("Found .env files, but failed to load any; aborting");
-        }
-
-        if (environment != "default") {
-            throw Exception("Only the default environment is allowed when no config files exist");
-        }
+    } else if (!envFile.empty()) {
+        throw Exception("Found .env files, but failed to load any; aborting");
+    } else if (environment != "default") {
+        throw Exception("Only the default environment is allowed when no config files exist");
     }
 
     stc::setEnv("UMBRA_DEVENV_ENVIRONMENT", environment.c_str());
@@ -271,10 +234,11 @@ std::string DevenvModule::resolveEnvironment(
 void DevenvModule::printList() {
     std::cout 
         << "Note that the source order is reversed for .env.devenv files, and only the topmost shell file is sourced "
-        << "directly by umbra. See the documentation (or --help) for more information."
+        << "directly by umbra. See the documentation (or --help) for more information.\n"
         << std::endl;
     auto list = util::listDirectoryPaths(this->lookups);
 
+    std::set<std::string> allEnvs;
     for (auto& [dir, files] : list) {
         std::cout << dir.string() << std::endl;
         bool hasContents = false;
@@ -293,6 +257,22 @@ void DevenvModule::printList() {
                 }
                 std::cout << " [trusted: " << "not implemented" << "]" << std::endl;
 
+                if (file.starts_with(".env")) {
+                    try {
+                        auto spec = loadConfigFile(dir / file);
+                        if (spec.has_value()) {
+                            auto envs = getLegalEnvironments({spec.value()});
+                            std::cout << "\t    Declared environments: "
+                                << std::ranges::to<std::string>(
+                                    std::views::join_with(envs, ", ")
+                                )
+                                << std::endl;
+                            allEnvs.insert(envs.begin(), envs.end());
+                        }
+                    } catch (const nlohmann::json::exception& err) {
+                        spdlog::error("\t    JSON parse error: {}", err.what());
+                    }
+                }
             }
         }
 
@@ -300,7 +280,73 @@ void DevenvModule::printList() {
             std::cout << "\tNo config files found" << std::endl;
         }
         std::cout << "\n\n";
+
+        if (allEnvs.size()) {
+            std::cout << "All available environments: " << std::ranges::to<std::string>(
+                std::views::join_with(allEnvs, ", ")
+            ) << std::endl;
+        }
     }
+}
+
+std::vector<std::string> DevenvModule::getLegalEnvironments(
+    const std::vector<devenv::ConfigSpec>& specFiles
+) {
+    // TODO: probably worth using an std::set, and resolving aliases here. This will likely break moduleMain if my
+    // sleepy brain correctly remembers how it's set up
+    return std::ranges::to<std::vector>(
+        specFiles
+        | std::views::transform([](const auto& confSpec) {
+            return std::ranges::to<std::vector<std::string>>(
+                confSpec.envs | std::views::keys
+            );
+        })
+        | std::views::join
+    );
+}
+
+std::optional<devenv::ConfigSpec> DevenvModule::loadConfigFile(const std::filesystem::path& file) {
+    std::ifstream f(file);
+    if (!f) {
+        spdlog::error("{} exists, but could not be opened", file.string());
+        return std::nullopt;
+    }
+    return parseJsonC(f).get<devenv::ConfigSpec>();
+}
+
+std::vector<devenv::ConfigSpec> DevenvModule::loadConfigFiles(
+    const std::vector<std::filesystem::path>& envFile
+) {
+    std::vector<devenv::ConfigSpec> configFiles;
+    for (auto& file : envFile) {
+    spdlog::debug("Now loading {}", file.string());
+        auto spec = loadConfigFile(file);
+        if (!spec.has_value()) {
+            continue;
+        }
+        configFiles.push_back(
+            spec.value()
+        );
+    }
+    return configFiles;
+}
+
+std::vector<std::filesystem::path> DevenvModule::loadShellPaths() {
+    return util::findMatchesInPaths(
+        lookups,
+        { ".shell.devenv" },
+        true
+    );
+
+}
+std::vector<std::filesystem::path> DevenvModule::loadEnvPaths() {
+    std::vector<std::filesystem::path> envLookups = lookups;
+    std::reverse(envLookups.begin(), envLookups.end());
+    return util::findMatchesInPaths(
+        envLookups,
+        { ".env.devenv" },
+        false
+    );
 }
 
 }

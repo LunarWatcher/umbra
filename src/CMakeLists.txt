@@ -32,9 +32,8 @@ target_include_directories(umbrasrc PUBLIC ./)
 # Largely for development use
 add_custom_target(resources
     COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/share
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/share/umbra
 
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/shell ${CMAKE_BINARY_DIR}/share/umbra
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/share ${CMAKE_BINARY_DIR}/share
     COMMENT "Copying resources"
 )
 add_dependencies(umbrasrc resources)
@@ -67,5 +66,7 @@ install(
     TARGETS umbra
     DESTINATION bin
 )
+# TODO: this does not install the resources. in retrospect, it probably makes sense to `make install`
+# umbra into the dist folder rather than doing the weird shit I currently do
 # }}}
 # vim:ft=cmake

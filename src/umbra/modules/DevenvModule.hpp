@@ -35,6 +35,18 @@ public:
         const devenv::ConfigSpec& mainSpec,
         const std::string& inputEnvironment
     );
+
+    std::vector<std::string> getLegalEnvironments(
+        const std::vector<devenv::ConfigSpec>& specFiles
+    );
+
+    std::vector<std::filesystem::path> loadShellPaths();
+    std::vector<std::filesystem::path> loadEnvPaths();
+
+    std::optional<devenv::ConfigSpec> loadConfigFile(const std::filesystem::path& file);
+    std::vector<devenv::ConfigSpec> loadConfigFiles(
+        const std::vector<std::filesystem::path>& envFile
+    );
 };
 
 }
