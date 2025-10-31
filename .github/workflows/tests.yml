@@ -6,6 +6,10 @@ on:
     branches: [ master ]
 jobs:
   tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [clang, g++]
     runs-on: ubuntu-24.04
     container: ubuntu:rolling
     steps:

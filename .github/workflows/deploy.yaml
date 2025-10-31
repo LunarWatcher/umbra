@@ -11,18 +11,13 @@ permissions:
 
 jobs:
   assemble:
-    strategy:
-      fail-fast: false
-      matrix:
-        compiler: [clang, g++]
     runs-on: ubuntu-24.04
     container: ubuntu:rolling
     steps:
       - name: Install deps
         run: |
           apt update && apt upgrade -y
-          apt install -y cmake build-essential make git
-          apt install -y ${{ matrix.compiler }}
+          apt install -y cmake gcc build-essential make git
       - uses: actions/checkout@main
       - name: Fix git ownership
         run: |
