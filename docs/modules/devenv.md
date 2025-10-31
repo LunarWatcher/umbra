@@ -71,9 +71,9 @@ In an environment configuration, you can set specific shell variables that you c
 
 This is with one exception: `UMBRA_DEVENV_ENVIRONMENT`, which is set by umbra prior to shell execution. This always matches an environment declared in the `.env.devenv` file.
 
-The environment files are JSON files with umbra template support, but no code execution. For any dynamic variables you need, you'll need to set them in the `.shell.devenv`.
+The environment files are JSON files with umbra template support, but no code execution. **All variable contents support templates**, but variable names cannot be templated. For any dynamic variables you need, you'll need to compute and set them in the `.shell.devenv` file. For information about templating, see [templating](../special/Templating.md)
 
-Syntax:
+Syntax and example:
 ```jsonc
 {
     // This file is a modified variant of jsonc, where only // comments are allowed, and
