@@ -148,7 +148,7 @@ void DevenvModule::moduleMain() {
 
     if (!configFiles.empty()) {
         auto legalEnvs = getLegalEnvironments(configFiles);
-        if (std::find(legalEnvs.begin(), legalEnvs.end(), environment) == legalEnvs.end()) {
+        if (legalEnvs.find(environment) == legalEnvs.end()) {
             spdlog::error(
                 "The provided environment ({}) is not valid. Legal values: {}",
                 environment,
