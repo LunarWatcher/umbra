@@ -9,12 +9,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        - compiler: clang
-          cxx: clang++
-          cc: clang
-        - compiler: g++
-          cxx: g++
-          cc: gcc
+        include:
+          - compiler: clang
+            cxx: clang++
+            cc: clang
+          - compiler: g++
+            cxx: g++
+            cc: gcc
     runs-on: ubuntu-24.04
     container: ubuntu:rolling
     steps:
