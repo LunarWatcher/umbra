@@ -6,7 +6,7 @@
 
 For convenience, there's a pre-made script you can run:
 ```bash
-sh -c "$(wget -O- https://raw.githubusercontent.com/LunarWatcher/umbra/master/scripts/install.sh)"
+bash -c "$(wget -O- https://raw.githubusercontent.com/LunarWatcher/umbra/master/scripts/install.sh)"
 ```
 
 This script also contains the exact steps to do the install should you wish to do it manually. It's the `scripts/install.sh` here on Codeberg/GitHub. Note that you need `tar`, `curl`, and `wget` to use the script, so if you lack any of those dependencies and are unwilling to install them, you'll need to figure it out on your own.
