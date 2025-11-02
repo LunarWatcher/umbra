@@ -76,7 +76,7 @@ if (UMBRA_COVERAGE)
     add_compile_options(-fprofile-arcs -ftest-coverage)
     add_link_options(--coverage)
     add_custom_target(gen-coverage
-        COMMAND ${LCOV} --capture --output coverage.info --include "${CMAKE_SOURCE_DIR}/src/\\*" --exclude "${CMAKE_BINARY_DIR}/_deps/\\*" --directory . --gcov-tool ${GCOV} --ignore-errors inconsistent
+        COMMAND ${LCOV} --capture --output coverage.info --include "${CMAKE_SOURCE_DIR}/src/\\*" --exclude "${CMAKE_BINARY_DIR}/_deps/\\*" --directory . --gcov-tool ${GCOV} --ignore-errors inconsistent,gcov
         COMMAND ${GENHTML} coverage.info --output coverage-html --ignore-errors inconsistent
     )
 endif()
@@ -89,7 +89,7 @@ add_custom_target(run
     DEPENDS umbra
     COMMENT "Run umbra")
 add_custom_target(test
-    COMMAND tests
-    DEPENDS tests
+    COMMAND umbra_tests
+    DEPENDS umbra_tests
     COMMENT "Test umbra")
 # vim:ft=cmake
