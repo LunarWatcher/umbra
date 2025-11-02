@@ -11,6 +11,7 @@
 #include <nlohmann/json.hpp>
 #include <optional>
 #include <ranges>
+#include <format>
 
 namespace umbra {
 
@@ -308,7 +309,7 @@ std::set<std::string> DevenvModule::getLegalEnvironments(
 
                 } else {
                     out.insert(
-                        key + " -> " + alias // NOLINT
+                        std::format("{} -> {}", key, alias)
                     );
                 }
             } else {

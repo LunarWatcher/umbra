@@ -10,6 +10,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 option (UMBRA_LINT "Whether or not to enable clang-tidy checks" OFF)
 option (UMBRA_LINT_WARNINGS_ARE_ERRORS "Whether or not to set -warnings-as-errors" OFF)
 option (UMBRA_SANITISE "Whether or not to enable -fsanitize=undefined" OFF)
+option (UMBRA_COVERAGE "Whether or not to enable test coverage" OFF)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(SHARED OFF)
@@ -63,6 +64,21 @@ add_definitions(-DUMBRA_VERSION="${UMBRA_VERSION}")
 
 if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DUMBRA_DEBUG")
+endif()
+
+if (UMBRA_COVERAGE)
+    string(REGEX MATCH "^([0-9]+)\\.([0-9]+)\\.([0-9]+)" CMAKE_CXX_COMPILER_VERSION_REGEX_MATCH  ${CMAKE_CXX_COMPILER_VERSION})
+    set(COMPILER_MAJOR ${CMAKE_MATCH_1})
+    find_program(GCOV NAMES gcov-${COMPILER_MAJOR} gcov REQUIRED)
+    find_program(LCOV lcov REQUIRED)
+    find_program(GENHTML genhtml REQUIRED)
+
+    add_compile_options(-fprofile-arcs -ftest-coverage)
+    add_link_options(--coverage)
+    add_custom_target(gen-coverage
+        COMMAND ${LCOV} --capture --output coverage.info --include "${CMAKE_SOURCE_DIR}/src/\\*" --exclude "${CMAKE_BINARY_DIR}/_deps/\\*" --directory . --gcov-tool ${GCOV} --ignore-errors inconsistent
+        COMMAND ${GENHTML} coverage.info --output coverage-html --ignore-errors inconsistent
+    )
 endif()
 
 add_subdirectory(src)

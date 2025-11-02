@@ -17,10 +17,13 @@ You need:
 * Linux (still)
 * CMake 3.27 or newer
 * A C++23 compiler
+    * GCC: 14 or newer (verified borked on GCC 13)
+    * Clang: 18 or newer (may work on earlier versions, but I have not tested)
 * An internet connection
 * The repo cloned
 * `make`, or another CMake generator. `make` is usually available everywhere, and therefore what's used in this documentation. If you don't use make, you'll need to replace steps explicitly invoking `make`, and this is left as an exercise to the reader.
 
+If you have umbra installed already, you can instead follow the steps in the [Using umbra to develop umbra](#devenv) section. If you don't have umbra installed, or if you don't want to use it, run:
 ```
 mkdir build
 cd build
@@ -32,8 +35,11 @@ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DUMBRA_LIN
 # Build only 
 make -j $(nproc)
 
-# Run
+# Run umbra
 make -j $(nproc) run
+
+# Run tests (shock)
+make -j $(nproc) test
 ```
 
 ### Running tests
@@ -57,17 +63,31 @@ In practice, this means:
 
 Writing tests isn't always feasible, but it should be attempted whereever possible. However, if any tests break, they must be fixed. Removal should only be done if the corresponding functionality is removed, and not as a way to bypass the test failures to maybe perhaps fix later.
 
+#### Running tests with coverage
+
+If you want to run coverage, the stuff to do that been added to the CMakeLists.txt
+
+```bash
+cmake -DCMAKE_BUILD_TYPE=Debug -DUMBRA_COVERAGE=ON
+```
+You may need to remove `CMakeCache.txt` and/or the entire build dir for the cmake command to take effect. If you're not seeing lots of recompiling in the next step, that's probably the case.
+```bash
+make -j $(nproc) test
+make gen-coverage
+xdg-open coverage-html/index.html
+```
+
 ### Dependency policy
 
-No unnecessary compile-time dependencies should be introduced, as compile-time dependencies increase the complexity of actually getting stuff built by and shipped to end-users.
+No unnecessary compile-time dependencies should be introduced, as compile-time dependencies increase the complexity of actually getting stuff built by and shipped to end-users. A compile-time dependency in this case refers to any dependency that's linked to. Third-party dependencies used in the form of commands do not count.
 
-Currently, the following four dependencies are used:
+Currently, the following five dependencies are used:
 
-* [Catch2](https://github.com/catchorg/Catch2/) (tests only, so never shipped)
-* [CLI11](https://github.com/CLIUtils/CLI11) for command-line parsing
-* [stc](https://github.com/LunarWatcher/stc) for multiple common utils
-* [spdlog](https://github.com/gabime/spdlog) for logging, because I didn't feel like implementing global state management to also shut the logger up when necessary when it has already been done
-* [nlohmann/json](https://github.com/nlohmann/json) for user config and data storage
+* [Catch2](https://github.com/catchorg/Catch2/) ([BSL-1.0](https://github.com/catchorg/Catch2/blob/devel/LICENSE.txt)) (tests only, so never shipped)
+* [CLI11](https://github.com/CLIUtils/CLI11) ([3-Clause BSD license](https://github.com/CLIUtils/CLI11/blob/main/LICENSE)) for command-line parsing
+* [stc](https://github.com/LunarWatcher/stc) ([MIT](https://github.com/LunarWatcher/stc/blob/master/LICENSE)) for multiple common utils
+* [spdlog](https://github.com/gabime/spdlog) ([MIT](https://github.com/gabime/spdlog/blob/v1.x/LICENSE)) for logging, because I didn't feel like implementing global state management to also shut the logger up when necessary when it has already been done
+* [nlohmann/json](https://github.com/nlohmann/json) ([MIT](https://github.com/nlohmann/json/blob/develop/LICENSE.MIT)) for user config and data storage[^2]
 
 All other dependencies are exclusively runtime-dependencies that are only ever attempted used if the user uses a corresponding command. This is preferred over linking, as anything that could force a recompilation to use certain modules is undesirable. One functionally identical binary should always be produced regardless of what optional dependencies are in the compiling user's PATH.
 
@@ -108,3 +128,4 @@ These are:
 A standard layout is provided that pretty much just runs the tests. It can be used from within `devenv`, which currently works as a way to get around the lack of proper pipelines in zellij. This is hopefully coming soon, at which point the exact relation to devenv will likely change. How is TBA
 
 [^1]: The error handling used in umbra uses custom exceptions, but not all errors are going to use these. How non-caught exceptions are logged (if at all) is a wildcard.
+[^2]: I'm not going to lie, this wasn't my preference. The YAML library for C++ is trash, yyjson (which I actually really like) is unfortunately far too verbose not to have an abstraction layer between it and umbra's code, and rfl (which could be that abstraction layer) is built on an AI slop foundation, and is therefore out of the question.

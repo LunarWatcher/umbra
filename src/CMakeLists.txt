@@ -38,7 +38,6 @@ add_custom_target(resources
 )
 add_dependencies(umbrasrc resources)
 
-
 # Linting {{{
 if (UMBRA_LINT)
     find_program(
