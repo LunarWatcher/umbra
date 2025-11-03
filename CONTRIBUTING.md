@@ -83,11 +83,15 @@ No unnecessary compile-time dependencies should be introduced, as compile-time d
 
 Currently, the following five dependencies are used:
 
-* [Catch2](https://github.com/catchorg/Catch2/) ([BSL-1.0](https://github.com/catchorg/Catch2/blob/devel/LICENSE.txt)) (tests only, so never shipped)
 * [CLI11](https://github.com/CLIUtils/CLI11) ([3-Clause BSD license](https://github.com/CLIUtils/CLI11/blob/main/LICENSE)) for command-line parsing
 * [stc](https://github.com/LunarWatcher/stc) ([MIT](https://github.com/LunarWatcher/stc/blob/master/LICENSE)) for multiple common utils
 * [spdlog](https://github.com/gabime/spdlog) ([MIT](https://github.com/gabime/spdlog/blob/v1.x/LICENSE)) for logging, because I didn't feel like implementing global state management to also shut the logger up when necessary when it has already been done
 * [nlohmann/json](https://github.com/nlohmann/json) ([MIT](https://github.com/nlohmann/json/blob/develop/LICENSE.MIT)) for user config and data storage[^2]
+* [cpr](https://github.com/libcpr/cpr) ([MIT](https://github.com/libcpr/cpr/blob/master/LICENSE)) for web requests
+
+Additionally, the following dependencies are used exclusively in tests:
+
+* [Catch2](https://github.com/catchorg/Catch2/) ([BSL-1.0](https://github.com/catchorg/Catch2/blob/devel/LICENSE.txt))
 
 All other dependencies are exclusively runtime-dependencies that are only ever attempted used if the user uses a corresponding command. This is preferred over linking, as anything that could force a recompilation to use certain modules is undesirable. One functionally identical binary should always be produced regardless of what optional dependencies are in the compiling user's PATH.
 

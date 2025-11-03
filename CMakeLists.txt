@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.27)
 project(umbra)
 
 set (CMAKE_CXX_STANDARD 23)
@@ -15,6 +15,7 @@ option (UMBRA_COVERAGE "Whether or not to enable test coverage" OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(SHARED OFF)
 set(SPDLOG_USE_STD_FORMAT ON CACHE STRING "" FORCE)
+set(CPR_USE_SYSTEM_CURL ON CACHE STRING "" FORCE)
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -Wno-c++11-narrowing")
 
@@ -41,11 +42,17 @@ FetchContent_Declare(json
     GIT_TAG v3.12.0
     EXCLUDE_FROM_ALL
 )
+FetchContent_Declare(libcpr
+    GIT_REPOSITORY https://github.com/libcpr/cpr
+    GIT_TAG 1.12.0
+    EXCLUDE_FROM_ALL
+)
 FetchContent_MakeAvailable(
     cli11
     stc
     spdlog
     json
+    libcpr
 )
 # Set up versioning {{{
 find_program(GIT git)

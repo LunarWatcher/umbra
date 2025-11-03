@@ -4,7 +4,6 @@
 #include <stc/Colour.hpp>
 
 #include "modules/include.hpp"
-#include "umbra/modules/DevenvModule.hpp"
 
 namespace umbra {
 ModuleLoader::ModuleLoader() : app(
@@ -18,6 +17,7 @@ ModuleLoader::ModuleLoader() : app(
     std::vector<std::shared_ptr<Module>> modules = {
         CREATE_MODULE(ZellijModule),
         CREATE_MODULE(DevenvModule),
+        CREATE_MODULE(MetaModule),
     };
 
     for (auto& mod : modules) {
