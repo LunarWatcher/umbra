@@ -65,6 +65,13 @@ int ModuleLoader::parse(int argc, const char* argv[]) {
             << "An error occurred. Message: "
             << stc::colour::reset;
         std::cerr << e.what() << std::endl;
+        if (e.embeddedErrorMessage.has_value()) {
+            std::cerr << stc::colour::fg<stc::colour::FourBitColour::RED>
+                << "Supplemental information available:"
+                << stc::colour::reset
+                << e.embeddedErrorMessage.value()
+                << std::endl;
+        }
         return 2;
     }
 

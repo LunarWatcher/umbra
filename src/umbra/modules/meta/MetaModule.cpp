@@ -20,7 +20,12 @@ LoadInfo MetaModule::onLoadCLI(CLI::App& app) {
 
     rootSubcommand->add_flag_callback("--check-update,-u", [this]() {
         this->checkUpdates();
-    });
+    })
+        ->description(
+            "Calls the GitHub API to check if there's a new version available. No updates are installed, this tool "
+            "exists so you don't have to `umbra --version` and then check github separately. This may fail if you "
+            "have many other things calling the GitHub API on your network, or otherwise have been rate limited."
+        );
 
     return LoadInfo {
         .rootSubcommand = rootSubcommand
@@ -29,7 +34,7 @@ LoadInfo MetaModule::onLoadCLI(CLI::App& app) {
 
 void MetaModule::checkUpdates() {
     std::string currVersion = UMBRA_VERSION;
-    if (currVersion.contains("DEV") || !currVersion.contains(".")) {
+    if (!currVersion.contains(".")) {
         std::cerr << "Cannot compare: you're running a development version, or a version built without git available. "
             << "Found version " << UMBRA_VERSION << ", but expected vX.Y.Z"
             << std::endl;
@@ -44,7 +49,7 @@ void MetaModule::checkUpdates() {
     );
     if (res.status_code != 200) {
         throw Exception(
-            "GitHub returned invalid response",
+            "Non-200 response from GitHub's API (HTTP/" + std::to_string(res.status_code) + ")",
             res.text
         );
     }
