@@ -22,7 +22,7 @@ jobs:
       - name: Install deps
         run: |
           apt update && apt upgrade -y
-          apt install -y cmake build-essential make git libssl-dev curl
+          apt install -y cmake build-essential make git libcurl4-openssl-dev
           apt install -y ${{ matrix.compiler }}
 
       - name: Environment information
@@ -57,7 +57,7 @@ jobs:
       - name: Install deps
         run: |
           apt update && apt upgrade -y
-          apt install -y cmake gcc build-essential make git clang-tidy libssl-dev curl
+          apt install -y cmake gcc build-essential make git clang-tidy libcurl4-openssl-dev
       - uses: actions/checkout@main
       - name: Fix git ownership
         run: |
