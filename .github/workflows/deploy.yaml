@@ -17,7 +17,7 @@ jobs:
       - name: Install deps
         run: |
           apt update && apt upgrade -y
-          apt install -y cmake gcc build-essential make git
+          apt install -y cmake gcc build-essential make git openssl curl
       - uses: actions/checkout@main
       - name: Fix git ownership
         run: |
