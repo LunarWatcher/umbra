@@ -2,7 +2,7 @@
 
 Will be maintained after the first patch release. Everything up to that point is just establishing base features, and it's too much stuff to bother tracking.
 
-This changelog is based on [Keep A Changelog](https://keepachangelog.com/en/1.1.0/).
+This changelog is loosely based on [Keep A Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
@@ -16,6 +16,7 @@ This changelog is based on [Keep A Changelog](https://keepachangelog.com/en/1.1.
 ### Changed
 
 * Internal: Changed from the deprecated `stc::syscommand*` family of functions to `stc::Unix::Process`
+    * This should not affect end-users, as it's the same underlying system with a much better interface, but it might.
 
 ## v0.1.0-v0.1.2
 
