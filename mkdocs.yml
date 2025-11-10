@@ -1,0 +1,24 @@
+site_name: Umbra documentation
+nav:
+  # TODO: "Front page" is a shit title and you should feel bad, but it works for now
+  - Front page: index.md
+  - Getting started: Getting started.md
+  - Feature summary and available modules: Modules.md
+  - Module documentation:
+    - Zellij module: modules/zellij.md
+    - Devenv module: modules/devenv.md
+  - "✨ Magic ✨ features":
+    - Templating: special/Templating.md
+  - Examples:
+    - Modular private zellij template repo: examples/zellij/Modular private template repo.md
+
+theme:
+  name: material
+  icon:
+    logo: material/heart
+  plugins:
+    - privacy:
+        enabled: true
+
+markdown_extensions:
+  - pymdownx.magiclink 
