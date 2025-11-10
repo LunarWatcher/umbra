@@ -2,6 +2,7 @@
 #include "CLI/CLI.hpp"
 #include "spdlog/spdlog.h"
 #include "stc/Environment.hpp"
+#include "stc/unix/Process.hpp"
 #include "umbra/except/Exception.hpp"
 #include "umbra/util/FilesystemExt.hpp"
 #include <filesystem>
@@ -94,19 +95,21 @@ void ZellijModule::moduleMain() {
     }
 
     auto resolvedLayout = resolvePathFromName(layout);
-    std::vector<const char*> command = {
+    std::vector<std::string> command = {
         "/usr/bin/env",
         "zellij",
         "-l",
-        resolvedLayout.c_str()
+        resolvedLayout
     };
 
     for (auto& cmd : passthroughArgs) {
-        command.push_back(cmd.c_str());
+        command.push_back(cmd);
     }
 
-    int code = 0;
-    stc::syscommandNoCapture(command, &code);
+    stc::Unix::Process p{
+        command
+    };
+    auto code = p.block();
 
     if (code != 0) {
         throw Exception("Failed to load zellij");

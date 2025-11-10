@@ -1,20 +1,25 @@
 #include "FilesystemExt.hpp"
 #include "spdlog/spdlog.h"
+#include "stc/unix/Process.hpp"
 #include <filesystem>
 #include <vector>
 
 namespace umbra {
 
 std::optional<std::string> util::getGitRoot() {
-    int code = 0;
-    auto stdout = stc::syscommand(std::vector {
-        "/usr/bin/env",
-        "git", 
-        "rev-parse",
-        "--show-toplevel"
-    }, &code);
+    stc::Unix::Process p {
+        std::vector<std::string> {
+            "/usr/bin/env",
+            "git", 
+            "rev-parse",
+            "--show-toplevel"
+        },
+        { .stdoutPipe = std::make_shared<stc::Unix::Pipe>() }
+    };
+    auto code = p.block();
+    auto stdout = p.getStdoutBuffer();
     if (code != 0) {
-        spdlog::error("Failed to load git root: {}. `{{git_root}}` templates will default to ./ instead.", stdout);
+        spdlog::error("Failed to load git root. `{{git_root}}` templates will default to ./ instead.");
         return std::nullopt;
     }
     stdout.erase(

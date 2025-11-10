@@ -2,6 +2,7 @@
 #include "spdlog/spdlog.h"
 #include "stc/Environment.hpp"
 #include "stc/StringUtil.hpp"
+#include <stc/unix/Process.hpp>
 #include "umbra/except/Exception.hpp"
 #include <filesystem>
 
@@ -21,7 +22,7 @@ ShellType ShellWrangler::identifyShell(const std::string& shellOrPathName) {
 
 void ShellWrangler::execInteractive(
     const std::string& shellPathOrName,
-    std::vector<const char*> args,
+    std::vector<std::string> args,
     const std::string& commands
 ) {
     auto type = identifyShell(shellPathOrName);
@@ -69,11 +70,10 @@ void ShellWrangler::execInteractive(
         spdlog::debug("Arg: {}", arg);
     }
 
-    int code;
-    stc::syscommandNoCapture(
-        args,
-        &code
+    stc::Unix::Process proc(
+        args
     );
+    auto code = proc.block();
 
     // TODO: figure out what the code for ctrl-d is
     if (code != 0) {

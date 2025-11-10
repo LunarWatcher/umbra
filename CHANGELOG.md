@@ -11,6 +11,11 @@ This changelog is based on [Keep A Changelog](https://keepachangelog.com/en/1.1.
 * CI builds on both clang and GCC
 * `devenv`: add environments to `--list`
 * `meta`, currently only containing a `--check-update` flag that, as described on the box, checks if there's updates available. This doesn't actually do the updates, it just checks if there are updates available.
+* mkdocs for the docs folder: https://lunarwatcher.github.io/umbra/
+
+### Changed
+
+* Internal: Changed from the deprecated `stc::syscommand*` family of functions to `stc::Unix::Process`
 
 ## v0.1.0-v0.1.2
 

@@ -173,9 +173,9 @@ void DevenvModule::moduleMain() {
     }
 
     ShellWrangler wrangler;
-    std::vector<const char*> command = {
+    std::vector<std::string> command = {
         "/usr/bin/env",
-        shell.c_str()
+        shell
     };
 
     std::stringstream sourceCmd;

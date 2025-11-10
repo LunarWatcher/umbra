@@ -64,7 +64,7 @@ public:
      */
     void execInteractive(
         const std::string& shellPathOrName,
-        std::vector<const char*> args,
+        std::vector<std::string> args,
         const std::string& commands
     );
 };
