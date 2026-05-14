@@ -19,7 +19,8 @@ Checks: >
   -misc-include-cleaner,
   -performance-avoid-endl,
   -performance-enum-size,
-  -clang-analyzer-cplusplus.NewDeleteLeaks
+  -clang-analyzer-cplusplus.NewDeleteLeaks,
+  -portability-avoid-pragma-once
 
 # Windows does not like to cooperate with the correct type of path slashes
 # Note: the above comment is copypasta from the .clang-tidy template I use, and does not currently apply
