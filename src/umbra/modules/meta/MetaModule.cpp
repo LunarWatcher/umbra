@@ -22,9 +22,9 @@ LoadInfo MetaModule::onLoadCLI(CLI::App& app) {
         this->checkUpdates();
     })
         ->description(
-            "Calls the GitHub API to check if there's a new version available. No updates are installed, this tool "
-            "exists so you don't have to `umbra --version` and then check github separately. This may fail if you "
-            "have many other things calling the GitHub API on your network, or otherwise have been rate limited."
+            "Calls the Codeberg API to check if there's a new version available. No updates are installed, this tool "
+            "exists so you don't have to `umbra --version` and then check Codeberg separately. This may fail if you "
+            "have many other things calling the Codeberg API on your network, or otherwise have been rate limited."
         );
 
     return LoadInfo {
@@ -42,14 +42,14 @@ void MetaModule::checkUpdates() {
     }
 
     auto res = cpr::Get(
-        cpr::Url { "https://api.github.com/repos/LunarWatcher/umbra/releases/latest" },
+        cpr::Url { "https://codeberg.org/api/v1/repos/LunarWatcher/umbra/releases/latest" },
         cpr::Header {
             { "User-Agent", "LunarWatcher/umbra (update-check)" },
         }
     );
     if (res.status_code != 200) {
         throw Exception(
-            "Non-200 response from GitHub's API (HTTP/" + std::to_string(res.status_code) + ")",
+            "Non-200 response from Codeberg's API (HTTP/" + std::to_string(res.status_code) + ")",
             res.text
         );
     }
@@ -59,7 +59,7 @@ void MetaModule::checkUpdates() {
     } catch (const nlohmann::json::exception& e) {
         spdlog::error("{}", e.what());
         throw Exception(
-            "Failed to parse response from GitHub"
+            "Failed to parse response from Codeberg"
         );
     }
     std::string latest = json.at("name");
