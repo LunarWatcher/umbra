@@ -24,9 +24,10 @@ if (UMBRA_SANITISE)
 endif()
 
 include(FetchContent)
+# Fork of the original CLI11 diverging at 2.6.2 due to upstream use of AI slop machines
 FetchContent_Declare(cli11
-    GIT_REPOSITORY https://github.com/CLIUtils/CLI11
-    GIT_TAG v2.5.0
+    GIT_REPOSITORY https://codeberg.org/LunarWatcher/CLI11
+    GIT_TAG main
     EXCLUDE_FROM_ALL
 )
 FetchContent_Declare(stc
