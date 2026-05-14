@@ -66,7 +66,6 @@ void Module::autoConfVerbosity(CLI::App* subcommand) {
         } else if (spdlog::get_level() != spdlog::level::debug) { // Prevent overriding from debug to info
             spdlog::set_level(spdlog::level::info);
         }
-
     });
 }
 

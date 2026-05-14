@@ -18,7 +18,6 @@ private:
     bool list = false;
     bool lint = false;
     // }}}
-    
 public:
     DevenvModule(const parse::CommonContext& commonCtx);
 

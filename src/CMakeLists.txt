@@ -1,10 +1,11 @@
-add_library(umbrasrc STATIC 
+add_library(umbrasrc STATIC
     umbra/ModuleLoader.cpp
 
     umbra/except/Exception.cpp
 
     umbra/modules/DevenvModule.cpp
     umbra/modules/Module.cpp
+    umbra/modules/WatchModule.cpp
     umbra/modules/ZellijModule.cpp
     umbra/modules/meta/MetaModule.cpp
 

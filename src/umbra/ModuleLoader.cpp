@@ -17,6 +17,7 @@ ModuleLoader::ModuleLoader() : app(
     std::vector<std::shared_ptr<Module>> modules = {
         CREATE_MODULE(ZellijModule),
         CREATE_MODULE(DevenvModule),
+        CREATE_MODULE(WatchModule),
         CREATE_MODULE(MetaModule),
     };
 

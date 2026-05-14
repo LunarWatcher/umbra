@@ -4,7 +4,7 @@ Will be maintained after the first patch release. Everything up to that point is
 
 This changelog is loosely based on [Keep A Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased]
+## [v0.2.0]
 
 ### Added
 
@@ -12,6 +12,7 @@ This changelog is loosely based on [Keep A Changelog](https://keepachangelog.com
 * `devenv`: add environments to `--list`
 * `meta`, currently only containing a `--check-update` flag that, as described on the box, checks if there's updates available. This doesn't actually do the updates, it just checks if there are updates available.
 * mkdocs for the docs folder: https://lunarwatcher.github.io/umbra/
+* `watch`, a command used for watching file trees, since `inotify-tools` is GPL'd and maintained by an AI slop-using author
 
 ### Changed
 
@@ -22,4 +23,4 @@ This changelog is loosely based on [Keep A Changelog](https://keepachangelog.com
 
 _Initial release_
 
-[unreleased]: https://github.com/LunarWatcher/umbra/compare/v0.1.2...master
+[v0.2.0]: https://codeberg.org/LunarWatcher/umbra/compare/v0.1.2...master

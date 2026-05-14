@@ -7,7 +7,7 @@
 #include <filesystem>
 
 namespace umbra {
- 
+
 ShellType ShellWrangler::identifyShell(const std::string& shellOrPathName) {
     auto split = stc::string::split(shellOrPathName, '/').back();
 
