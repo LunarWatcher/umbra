@@ -11,6 +11,15 @@ This changelog is loosely based on [Keep A Changelog](https://keepachangelog.com
 * `pty`: New module for forcing scripts to run in a PTY, largely intended for interactive scripting purposes
 * `watch`: added documentation
 
+### Changed
+
+* `watch`: `--exec` is now `--command`, since `--exec`/`-c` caused me to confuse myself (and I wrote the thing like a few hours ago!)
+* Internals: bump catch2 to 3.14.0 to silence a lot of warnings
+
+### Fixed
+
+* `watch`: Fix path emitting including quotes due to a missing `.string()` on the path
+
 ## [v0.2.1]
 
 ### Changed
@@ -36,5 +45,7 @@ This changelog is loosely based on [Keep A Changelog](https://keepachangelog.com
 
 _Initial release_
 
+[unreleased]: https://codeberg.org/LunarWatcher/umbra/compare/v0.3.0...master
+[v0.3.0]: https://codeberg.org/LunarWatcher/umbra/compare/v0.2.1...v0.3.0
 [v0.2.1]: https://codeberg.org/LunarWatcher/umbra/compare/v0.2.0...v0.2.1
 [v0.2.0]: https://codeberg.org/LunarWatcher/umbra/compare/v0.1.2...v0.2.0
