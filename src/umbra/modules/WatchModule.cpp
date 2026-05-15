@@ -1,5 +1,7 @@
 #include "WatchModule.hpp"
 #include "umbra/sys/FSWatcher.hpp"
+#include <thread>
+#include <stc/unix/Process.hpp>
 
 namespace umbra {
 
@@ -27,6 +29,9 @@ USAGE:
   # This is not recommended due to the overhead of recreating the watch tree every time umbra starts, but if that's what
   # you want, this does technically work
   while umbra w --exit -- ../src; do make -j $(nproc); done
+
+  # Chaining with `umbra pty`
+  umbra watch --command "umbra pty -- make -j $(nproc) test | less -r" -- ../src
 )");
 
     autoConfVerbosity(subcommand);
@@ -42,7 +47,7 @@ USAGE:
         ->default_val(exitOnChange);
 
     auto execOpt = subcommand->add_option(
-        "--exec,-c",
+        "--command,-c",
         command,
         "An optional command to execute. Incompatible with -e"
     )
@@ -67,13 +72,14 @@ void WatchModule::moduleMain() {
         spdlog::error("You must provide at least one path to watch");
         return;
     }
+
     FSWatcher watcher(passthroughOpts);
 
     watcher.block([this](
             EventKind,
             const std::filesystem::path& path
     ) {
-        std::cout << path << std::endl;
+        std::cout << path.string() << std::endl;
         if (this->command.has_value()) {
             // NOLINTNEXTLINE(bugprone-command-processor): it's a feature, not a bug
             std::system(this->command.value().c_str());

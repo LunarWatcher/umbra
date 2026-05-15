@@ -1,6 +1,6 @@
 # umbra
 
-Set of ✨ magic ✨ command line tools.
+Set of ✨ magic ✨ command line tools, as well as scripting utilities.
 
 This is a C++ extension that I use with my [dotfiles](https://github.com/LunarWatcher/dotfiles/), but also meant to be standalone for use by anyone.
 

@@ -5,6 +5,7 @@ add_library(umbrasrc STATIC
 
     umbra/modules/DevenvModule.cpp
     umbra/modules/Module.cpp
+    umbra/modules/PtyModule.cpp
     umbra/modules/WatchModule.cpp
     umbra/modules/ZellijModule.cpp
     umbra/modules/meta/MetaModule.cpp

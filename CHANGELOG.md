@@ -4,6 +4,13 @@ Will be maintained after the first patch release. Everything up to that point is
 
 This changelog is loosely based on [Keep A Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [v0.3.0]
+
+### Added
+
+* `pty`: New module for forcing scripts to run in a PTY, largely intended for interactive scripting purposes
+* `watch`: added documentation
+
 ## [v0.2.1]
 
 ### Changed

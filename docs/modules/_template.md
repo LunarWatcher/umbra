@@ -5,7 +5,7 @@
 * **Runtime requirements:** N/A
 * **Base command:** `umbra xyz`
 * **Command run without arguments:** N/A
-* **States:** Not implemented/alpha/beta/stable/deprecated
+* **State:** Not implemented/alpha/beta/stable/deprecated
 
 > `umbra <base command>` is [short introduction]
 
