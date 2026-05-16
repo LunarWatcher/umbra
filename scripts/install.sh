@@ -3,7 +3,7 @@
 set -x
 TARGET_DIR=${HOME}/.local/
 
-tag=$(curl "https://github.com/LunarWatcher/umbra/releases/latest&cachebreak=$RANDOM" -sv 2>&1 | grep location | sed -e "s|^.*/tag/||" | tr -d "\r\n")
+tag=$(curl "https://github.com/LunarWatcher/umbra/releases/latest?cachebreak=$RANDOM" -sv 2>&1 | grep location | sed -e "s|^.*/tag/||" | tr -d "\r\n")
 if [ $? != 0 ]; then
     echo "Failed to get latest tag from github"
     exit -1
