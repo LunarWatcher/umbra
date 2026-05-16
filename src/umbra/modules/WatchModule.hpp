@@ -12,6 +12,8 @@ private:
     bool exitOnChange = false;
     std::optional<std::string> command;
 
+    std::chrono::milliseconds delayMillis{1000};
+
     std::vector<std::filesystem::path> passthroughOpts;
 public:
     WatchModule(

@@ -4,6 +4,14 @@ Will be maintained after the first patch release. Everything up to that point is
 
 This changelog is loosely based on [Keep A Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [unreleased]
+
+## [v0.3.1]
+
+### Added
+
+* `watch`: added a `--delay-ms` (default: `1000`) to force a delay between executing commands
+
 ## [v0.3.0]
 
 ### Added
@@ -46,6 +54,7 @@ This changelog is loosely based on [Keep A Changelog](https://keepachangelog.com
 _Initial release_
 
 [unreleased]: https://codeberg.org/LunarWatcher/umbra/compare/v0.3.0...master
+[v0.3.1]: https://codeberg.org/LunarWatcher/umbra/compare/v0.3.0...v0.3.1
 [v0.3.0]: https://codeberg.org/LunarWatcher/umbra/compare/v0.2.1...v0.3.0
 [v0.2.1]: https://codeberg.org/LunarWatcher/umbra/compare/v0.2.0...v0.2.1
 [v0.2.0]: https://codeberg.org/LunarWatcher/umbra/compare/v0.1.2...v0.2.0

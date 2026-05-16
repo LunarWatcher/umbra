@@ -55,6 +55,17 @@ USAGE:
     execOpt->excludes(exitOpt);
 
     subcommand->add_option(
+        "--delay-ms,-d",
+        delayMillis,
+        "How long to delay between commands. This is set to 1000ms by default to avoid constantly "
+        "firing in the event of mass-edit events. Set this value to 0 to not have a delay. Note that setting a "
+        "sufficiently high timeout can result in events not being processed like you'd expect, as the timing "
+        "information is not supplied by inotify, but is rather retroactively added to describe when the event happened. "
+        "This also means long-running commands may end up eating events if you do a lot of concurrent editing."
+    )
+        ->default_val(delayMillis.count());
+
+    subcommand->add_option(
         "paths",
         passthroughOpts,
         "Files and directories to watch"
@@ -73,7 +84,12 @@ void WatchModule::moduleMain() {
         return;
     }
 
-    FSWatcher watcher(passthroughOpts);
+    FSWatcher watcher(
+        passthroughOpts,
+        {
+            .commandDelayTimeout = this->delayMillis
+        }
+    );
 
     watcher.block([this](
             EventKind,

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "spdlog/spdlog.h"
-#include <iostream>
+#include <chrono>
 #include <vector>
 #include <filesystem>
 
@@ -19,6 +19,17 @@ enum class EventKind {
     DirectoryRemoved,
 };
 
+struct WatcherConfig {
+    std::chrono::milliseconds commandDelayTimeout{0};
+};
+
+struct Event {
+    EventKind kind;
+    std::filesystem::path eventPath;
+
+    std::chrono::steady_clock::time_point ts;
+};
+
 /**
  * \brief Utility class for watching for filesystem changes on Linux through inotify
  *
@@ -27,12 +38,14 @@ enum class EventKind {
 class FSWatcher {
 private:
     int fd;
+    WatcherConfig conf;
 
     std::unordered_map<int, std::filesystem::path> watchDescriptors;
 public:
     FSWatcher(
-        const std::vector<std::filesystem::path>& initialWatches
-    ) {
+        const std::vector<std::filesystem::path>& initialWatches,
+        const WatcherConfig& conf = {}
+    ): conf(conf) {
         fd = inotify_init1(IN_NONBLOCK);
 
         for (auto& path : initialWatches) {
@@ -67,6 +80,7 @@ public:
             }
         };
         std::array<char, 4096> buff;
+        std::chrono::steady_clock::time_point ts = std::chrono::steady_clock::now();
         while (true) {
             ssize_t events = poll(
                 fds.data(),
@@ -83,6 +97,9 @@ public:
             }
 
             if (events > 0) {
+                // TODO: This is not optimal, but not sure what else to do. The events do not carry timestamp
+                // information, so this appears to be necessary to allow timeout logic
+                std::vector<Event> events;
                 if ((fds[0].revents & POLLIN) != 0) {
                     // inotify ready
                     spdlog::debug("Has events");
@@ -145,15 +162,32 @@ public:
                             }
 
                             spdlog::debug("EventKind = {} on {}", static_cast<int>(kind), eventPath.string());
-                            if (!onEvent(kind, eventPath)) {
-                                std::cout << "bye" << std::endl;
-                                goto done;
-                            }
+                            events.push_back({
+                                    kind,
+                                    eventPath,
+                                    std::chrono::steady_clock::now(),
+                            });
                         }
                     }
                 }
+
+                for (auto& event : events) {
+                    if (event.ts < ts + conf.commandDelayTimeout) {
+                        continue;
+                    }
+                    ts = event.ts;
+                    if (!onEvent(event.kind, event.eventPath)) {
+                        goto done;
+                    }
+                }
+
+                // Reset the time so the timer also applies between loops if `onEvent` takes a while:tm:
+                if (events.size()) {
+                    ts = std::chrono::steady_clock::now();
+                }
             }
         }
+
     done:
     }
 
