@@ -53,7 +53,7 @@ This changelog is loosely based on [Keep A Changelog](https://keepachangelog.com
 
 _Initial release_
 
-[unreleased]: https://codeberg.org/LunarWatcher/umbra/compare/v0.3.0...master
+[unreleased]: https://codeberg.org/LunarWatcher/umbra/compare/v0.3.1...master
 [v0.3.1]: https://codeberg.org/LunarWatcher/umbra/compare/v0.3.0...v0.3.1
 [v0.3.0]: https://codeberg.org/LunarWatcher/umbra/compare/v0.2.1...v0.3.0
 [v0.2.1]: https://codeberg.org/LunarWatcher/umbra/compare/v0.2.0...v0.2.1
