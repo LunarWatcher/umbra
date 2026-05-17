@@ -125,8 +125,13 @@ public:
                         ) {
                             event = (const inotify_event *) ptr;
 
-                            auto& parent = this->watchDescriptors.at(event->wd);
-                            std::filesystem::path eventPath = parent;
+                            // Guard against edge-case errors where folders are created and deleted rapidly, for example
+                            // during tests
+                            auto parentIt = this->watchDescriptors.find(event->wd);
+                            if (parentIt == this->watchDescriptors.end()) {
+                                continue;
+                            }
+                            std::filesystem::path eventPath = parentIt->second;
                             if (event->len) {
                                 eventPath /= event->name;
                             }

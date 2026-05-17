@@ -6,6 +6,12 @@ This changelog is loosely based on [Keep A Changelog](https://keepachangelog.com
 
 ## [unreleased]
 
+## [v0.3.2]
+
+### Fixed
+
+* `watch`: added guard against rapid file creation resulting in events being processed against watch descriptors that disappear again
+
 ## [v0.3.1]
 
 ### Added
