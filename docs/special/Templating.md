@@ -34,12 +34,29 @@ Standard identifiers are built-in and manually supported identifiers. Using them
 2. A fallback value if the expected value is unavailable
 3. Abort scenarios, where a hard error is generated. This is reserved for very specific scenarios, such as the binary required for the identifier outright missing.
 
-| Identifier | Description | Expected value | Fallback value | Aborts |
-| --- | --- | --- | --- | --- |
-| `git_root` | Path to the Git root | `/path/to/git/repo` | `./` if not in a git repo | If the `git` executable is not found. |
-| `curr_folder_name` | Name of the folder in the working directory | `working_dir` for `/path/to/working_dir` | - | - |
-| `cwd` | Current working directory | `/path/to/working/dir` | - | - |
+#### `git_root`
 
+Path to the git root.
+
+* Expected value: `/path/to/git/repo`
+* Fallback: `./` if not in a git repo
+* Aborts: if the `git` executable is not found
+
+#### `curr_folder_name`
+
+The name of the working directory folder
+
+* Expected value: `working_dir` for `/path/to/working_dir`
+* Fallback: None, there is always a working dir
+* Aborts: Never, there is always a working dir
+
+#### `cwd`
+
+Full path to the current working directory
+
+* Expected value: `/path/to/working/dir`
+* Fallback: None, there is always a working dir
+* Aborts: Never, there is always a working dir
 
 ### Environment variables (not implemented, may not be implemented)
 
