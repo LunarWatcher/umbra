@@ -25,7 +25,7 @@ jobs:
       - uses: LunarWatcher/install-violet@master
       - name: "Build page"
         run: |
-          cd build
+          cd docs
           violet generate
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
