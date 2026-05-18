@@ -4,7 +4,7 @@
 * **Implementation language:** C++
 * **Runtime requirements:** `inotify`
 * **Base command:** `umbra watch`, `umbra w`
-* **Command run without arguments:** [error: arguments must be provided]
+* **Command run without arguments:** error: arguments must be provided
 * **State:** alpha
 
 > `umbra watch` is a command for watching filesystems 

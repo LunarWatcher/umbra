@@ -4,7 +4,7 @@
 * **Implementation langauge:** C++
 * **Additional runtime requirements:** None
 * **Base command:** `umbra pty`
-* **Command run without arguments:** [error: arguments must be provided]
+* **Command run without arguments:** error: arguments must be provided
 * **State:** alpha
 
 > `umbra pty` is a utility command for running commands in a PTY while redirecting their output 

@@ -118,7 +118,7 @@ Environment files are always sourced before shell files, but don't have to be us
 
 While `PATH` is used in the above example, the injection isn't guaranteed to ensure that your additions are the first `PATH` components. This is a consequence of the environment variables being sourced before the shell's built-in config files, so any configurations in the user's `.*rc` files can shadow the additions made in the `.env.devenv`. 
 
-I'd like to change this at some point, but I can't agree with myself on the syntax, so I'm deprioritising it for now. in the meanwhile, you can specify an environment variable, for example[^1]:
+I'd like to change this at some point, but I can't agree with myself on the syntax, so I'm deprioritising it for now. in the meanwhile, you can specify an environment variable, for example:
 ```jsonc
 "vars": {
     "PATH_PREPEND": "{{git_root}}/build/bin"

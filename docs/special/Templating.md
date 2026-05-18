@@ -41,7 +41,7 @@ Standard identifiers are built-in and manually supported identifiers. Using them
 | `cwd` | Current working directory | `/path/to/working/dir` | - | - |
 
 
-### Environment variables [not implemented, may not be implemented]
+### Environment variables (not implemented, may not be implemented)
 
 Environment variables are expanded with
 ```
