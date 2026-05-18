@@ -1,0 +1,13 @@
+{
+    "name": "Umbra",
+    "description": "This page contains Umbra's documentation.",
+    "site_prefix": "/umbra",
+    "theme": "_default",
+    "data": {
+        "language": "en-GB",
+        "repo": {
+            "name": "umbra",
+            "url": "https://codeberg.org/LunarWatcher/umbra"
+        }
+    }
+}

@@ -7,6 +7,6 @@
 * **Command run without arguments:** N/A
 * **State:** Not implemented/alpha/beta/stable/deprecated
 
-> `umbra <base command>` is [short introduction]
+> `umbra <base command>` is (short introduction)
 
-## [Standard doc sections here]
+## (Standard doc sections here)
