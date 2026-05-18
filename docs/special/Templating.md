@@ -1,5 +1,7 @@
 # Templating
 
+{{ page.table_of_contents }}
+
 Because dynamic ✨ stuff ✨ is supported, many input fields support templating. Anything that supports templating is explicitly labelled as supporting it somewhere near its description. 
 
 Everything that supports templates will be marked as such somewhere. It is mentioned in the markdown documentation, but a condensed form is available in `umbra some-module --help`
