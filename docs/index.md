@@ -46,6 +46,8 @@ load-vault
 umbra z layout
 ```
 
-The last obstable to dropping to just one command (excluding `umbra env`) is that shells struggle with stdin input during startup. Once [Proton Pass CLI](https://old.reddit.com/r/ProtonPass/comments/1ogy9jr/proton_pass_cli/nlmgmmi/) is a thing, all I need is one command. Theoretically, with some changes to `umbra z`, the entire process could be inlined into the `umbra env` command. However, at least for my use-cases, there are other things I need inside the environment, so it doesn't make sense to do so.
+The last obstable to dropping to just one command (excluding `umbra env`) is that shells struggle with stdin input during startup. I worked around this with [Proton Pass CLI](https://protonpass.github.io/pass-cli/),and having it inject the right credentials. The credentials are picked by the env config file.
+
+TODO: generalized example 
 
 If you're paying attention at home, umbra isn't responsible for the bulk of the decrease; that's largely on zellij's layout system. However, there are other things that umbra does in my actual, full work environment that it I haven't covered. This is largely setting addtional config variables, extra setup, and project-scoped utility functions. Because I have my private lookup dir set to a separate Git repo, I can also commit it to a private repo for backup purposes. All of this combined results in a significant decrease to the amount of text I have to type, which means I don't have to waste anywhere near as much time on things.
