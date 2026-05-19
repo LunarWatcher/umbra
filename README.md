@@ -45,4 +45,4 @@ See [Getting started](https://github.com/LunarWatcher/umbra/blob/master/docs/Get
 
 ## License
 
-MIT. See the LICENSE file.
+Umbra itself is licensed under the [MIT license](LICENSE). The documentation is licensed under [CC-By-SA 4.0](docs/LICENSE)
