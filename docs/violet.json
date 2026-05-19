@@ -10,5 +10,8 @@
             "url": "https://codeberg.org/LunarWatcher/umbra",
             "license": "Umbra is licensed under the <a href=\"https://codeberg.org/LunarWatcher/umbra/src/branch/master/LICENSE\">MIT license</a>. The documentation is licensed under <a href=\"https://codeberg.org/LunarWatcher/umbra/src/branch/master/docs/LICENSE\">CC-By-SA 4.0</a>"
         }
-    }
+    },
+    "exclude": [
+        "LICENSE"
+    ]
 }
