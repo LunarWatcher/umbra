@@ -85,7 +85,6 @@ Currently, the following five dependencies are used:
 
 * [CLI11](https://github.com/CLIUtils/CLI11) ([3-Clause BSD license](https://github.com/CLIUtils/CLI11/blob/main/LICENSE)) for command-line parsing
 * [stc](https://github.com/LunarWatcher/stc) ([MIT](https://github.com/LunarWatcher/stc/blob/master/LICENSE)) for multiple common utils
-* [spdlog](https://github.com/gabime/spdlog) ([MIT](https://github.com/gabime/spdlog/blob/v1.x/LICENSE)) for logging, because I didn't feel like implementing global state management to also shut the logger up when necessary when it has already been done
 * [nlohmann/json](https://github.com/nlohmann/json) ([MIT](https://github.com/nlohmann/json/blob/develop/LICENSE.MIT)) for user config and data storage[^2]
 * [cpr](https://github.com/libcpr/cpr) ([MIT](https://github.com/libcpr/cpr/blob/master/LICENSE)) for web requests
 
@@ -101,11 +100,11 @@ Additional dependencies may be added as long as the need for it can be properly 
 
 Umbra has a split logging strategy:
 
-* spdlog is used for anything of value to the user or to debuggers, but that isn't output. It's supporting information that needs to be possible to shut off entirely for use in stable scripts.
+* minilog is used for anything of value to the user or to debuggers, but that isn't output. It's supporting information that needs to be possible to shut off entirely for use in stable scripts.
 * stdout (`std::cout`) is used for, shock, standard output. This is used for output that could be used in nested programs.
-* stderr (`std::cerr`) is used for terminating errors, i.e. error output that explains why the program shut down. `spdlog::error` can explain other details or intermediate steps, but `spdlog::error` can also be used for non-critical errors. 
+* stderr (`std::cerr`) is used for terminating errors, i.e. error output that explains why the program shut down. `minilog::error` can explain other details or intermediate steps, but `minilog::error` can also be used for non-critical errors. 
 
-`std::cerr` is functionally our critical, so `spdlog::critical` should not be used.
+`std::cerr` is functionally our critical, so `minilog::critical` should not be used.
 
 For scripters, this means:
 

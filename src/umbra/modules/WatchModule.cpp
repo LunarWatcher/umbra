@@ -80,7 +80,7 @@ USAGE:
 
 void WatchModule::moduleMain() {
     if (passthroughOpts.size() == 0) {
-        spdlog::error("You must provide at least one path to watch");
+        minilog::error("You must provide at least one path to watch");
         return;
     }
 

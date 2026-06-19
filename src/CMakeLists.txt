@@ -25,7 +25,6 @@ target_link_libraries(
 PUBLIC
     stc
     CLI11::CLI11
-    spdlog::spdlog
     nlohmann_json::nlohmann_json
     cpr::cpr
 )

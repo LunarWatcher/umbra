@@ -1,5 +1,5 @@
 #include "DevenvModule.hpp"
-#include "spdlog/spdlog.h"
+#include "stc/minilog.hpp"
 #include "stc/Environment.hpp"
 #include "umbra/except/Exception.hpp"
 #include "umbra/modules/devenv/ConfigSpec.hpp"
@@ -132,7 +132,7 @@ void DevenvModule::moduleMain() {
     } else if (envFile.empty() && this->environment != "default") {
         throw Exception(".env.devenv is missing, but using a non-default environment. Cannot continue");
     } else if (envFile.empty()) {
-        spdlog::warn(".env.devenv is missing. The environment will not be modified");
+        minilog::warn(".env.devenv is missing. The environment will not be modified");
     }
 
     auto configFiles = loadConfigFiles(
@@ -141,7 +141,7 @@ void DevenvModule::moduleMain() {
     std::string environment = configFiles.size() == 0 ? this->environment : resolveEnvironment(
         configFiles.at(0), this->environment
     );
-    spdlog::info(
+    minilog::info(
         "Resolved environment to {} (aliased: {})",
         environment,
         environment != this->environment ? "yes" : "no"
@@ -150,7 +150,7 @@ void DevenvModule::moduleMain() {
     if (!configFiles.empty()) {
         auto legalEnvs = getLegalEnvironments(configFiles);
         if (legalEnvs.find(environment) == legalEnvs.end()) {
-            spdlog::error(
+            minilog::error(
                 "The provided environment ({}) is not valid. Legal values: {}",
                 environment,
                 std::ranges::to<std::string>(std::views::join_with(legalEnvs, ", "))
@@ -271,7 +271,7 @@ void DevenvModule::printList() {
                             allEnvs.insert(envs.begin(), envs.end());
                         }
                     } catch (const nlohmann::json::exception& err) {
-                        spdlog::error("\t    JSON parse error: {}", err.what());
+                        minilog::error("\t    JSON parse error: {}", err.what());
                     }
                 }
             }
@@ -324,7 +324,7 @@ std::set<std::string> DevenvModule::getLegalEnvironments(
 std::optional<devenv::ConfigSpec> DevenvModule::loadConfigFile(const std::filesystem::path& file) {
     std::ifstream f(file);
     if (!f) {
-        spdlog::error("{} exists, but could not be opened", file.string());
+        minilog::error("{} exists, but could not be opened", file.string());
         return std::nullopt;
     }
     return parseJsonC(f).get<devenv::ConfigSpec>();
@@ -335,7 +335,7 @@ std::vector<devenv::ConfigSpec> DevenvModule::loadConfigFiles(
 ) {
     std::vector<devenv::ConfigSpec> configFiles;
     for (auto& file : envFile) {
-    spdlog::debug("Now loading {}", file.string());
+    minilog::debug("Now loading {}", file.string());
         auto spec = loadConfigFile(file);
         if (!spec.has_value()) {
             continue;

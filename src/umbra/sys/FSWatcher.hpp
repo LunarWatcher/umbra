@@ -1,6 +1,6 @@
 #pragma once
 
-#include "spdlog/spdlog.h"
+#include "stc/minilog.hpp"
 #include <chrono>
 #include <vector>
 #include <filesystem>
@@ -102,7 +102,7 @@ public:
                 std::vector<Event> events;
                 if ((fds[0].revents & POLLIN) != 0) {
                     // inotify ready
-                    spdlog::debug("Has events");
+                    minilog::debug("Has events");
                     while (true) { // Read loop
                         ssize_t size = read(
                             fd,
@@ -166,7 +166,7 @@ public:
                                 }
                             }
 
-                            spdlog::debug("EventKind = {} on {}", static_cast<int>(kind), eventPath.string());
+                            minilog::debug("EventKind = {} on {}", static_cast<int>(kind), eventPath.string());
                             events.push_back({
                                     kind,
                                     eventPath,
@@ -197,7 +197,7 @@ public:
     }
 
     void watch(const std::filesystem::path& path) {
-        spdlog::debug("Watching {}", path.string());
+        minilog::debug("Watching {}", path.string());
         auto wd = inotify_add_watch(
             fd,
             path.c_str(),
@@ -205,7 +205,7 @@ public:
         );
 
         if (wd < 0) {
-            spdlog::error("Failed to watch {}", path.string());
+            minilog::error("Failed to watch {}", path.string());
             return;
         }
         this->watchDescriptors[wd] = path;

@@ -1,5 +1,5 @@
 #include "FilesystemExt.hpp"
-#include "spdlog/spdlog.h"
+#include "stc/minilog.hpp"
 #include "stc/unix/Process.hpp"
 #include <filesystem>
 #include <vector>
@@ -19,7 +19,7 @@ std::optional<std::string> util::getGitRoot() {
     auto code = p.block();
     auto stdout = p.getStdoutBuffer();
     if (code != 0) {
-        spdlog::error("Failed to load git root. `{{git_root}}` templates will default to ./ instead.");
+        minilog::error("Failed to load git root. `{{git_root}}` templates will default to ./ instead.");
         return std::nullopt;
     }
     stdout.erase(

@@ -6,6 +6,9 @@ This changelog is loosely based on [Keep A Changelog](https://keepachangelog.com
 
 ## [unreleased]
 
+### Changed
+* Dropped spdlog in favour of minilog due to AI slop in spdlog
+
 ## [v0.3.2]
 
 ### Fixed

@@ -1,5 +1,5 @@
 #include "umbra/wranglers/Shell.hpp"
-#include "spdlog/spdlog.h"
+#include "stc/minilog.hpp"
 #include "stc/Environment.hpp"
 #include "stc/StringUtil.hpp"
 #include <stc/unix/Process.hpp>
@@ -30,8 +30,8 @@ void ShellWrangler::execInteractive(
     auto wranglerPath = std::filesystem::canonical(
         currPath.parent_path() / ".." / "share" / "umbra" / "wrangler"
     );
-    spdlog::debug("wranglerPath is {}", wranglerPath.string());
-    spdlog::debug("Command to inject is: {}", commands);
+    minilog::debug("wranglerPath is {}", wranglerPath.string());
+    minilog::debug("Command to inject is: {}", commands);
 
     // Required to avoid UB
     std::vector<std::string> strs;
@@ -67,7 +67,7 @@ void ShellWrangler::execInteractive(
     );
 
     for (auto& arg : args) {
-        spdlog::debug("Arg: {}", arg);
+        minilog::debug("Arg: {}", arg);
     }
 
     stc::Unix::Process proc(

@@ -1,14 +1,12 @@
-#include "spdlog/spdlog.h"
+#include "stc/minilog.hpp"
 #include "umbra/ModuleLoader.hpp"
 
 int main(int argc, const char* argv[]) {
 
 #ifdef UMBRA_DEBUG
-    spdlog::set_level(spdlog::level::debug);
-    spdlog::set_pattern("%^[%H:%M:%S.%f] [%-8l]%$ %v");
+    minilog::config().level = minilog::Debug;
 #else
-    spdlog::set_level(spdlog::level::info);
-    spdlog::set_pattern("%^%8l%$ %v");
+    minilog::config().level = minilog::Info;
 #endif
 
     umbra::ModuleLoader loader;

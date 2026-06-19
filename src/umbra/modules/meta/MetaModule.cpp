@@ -1,7 +1,7 @@
 #include "MetaModule.hpp"
 #include <cpr/cpr.h>
 #include "nlohmann/json.hpp"
-#include "spdlog/spdlog.h"
+#include "stc/minilog.hpp"
 #include "umbra/except/Exception.hpp"
 #include "umbra/modules/Module.hpp"
 #include "umbra/util/Parse.hpp"
@@ -57,7 +57,7 @@ void MetaModule::checkUpdates() {
     try {
         json = nlohmann::json::parse(res.text);
     } catch (const nlohmann::json::exception& e) {
-        spdlog::error("{}", e.what());
+        minilog::error("{}", e.what());
         throw Exception(
             "Failed to parse response from Codeberg"
         );

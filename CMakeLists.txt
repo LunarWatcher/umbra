@@ -33,11 +33,6 @@ FetchContent_Declare(cli11
 FetchContent_Declare(stc
     GIT_REPOSITORY https://github.com/LunarWatcher/stc
 )
-FetchContent_Declare(spdlog
-    GIT_REPOSITORY https://github.com/gabime/spdlog
-    GIT_TAG v1.16.0
-    EXCLUDE_FROM_ALL
-)
 FetchContent_Declare(json
     GIT_REPOSITORY https://github.com/nlohmann/json
     GIT_TAG v3.12.0
@@ -51,7 +46,6 @@ FetchContent_Declare(libcpr
 FetchContent_MakeAvailable(
     cli11
     stc
-    spdlog
     json
     libcpr
 )

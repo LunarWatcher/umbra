@@ -1,6 +1,6 @@
 
 #include "CLI/CLI.hpp"
-#include "spdlog/spdlog.h"
+#include "stc/minilog.hpp"
 #include "stc/Environment.hpp"
 #include "stc/unix/Process.hpp"
 #include "umbra/except/Exception.hpp"
@@ -130,9 +130,9 @@ std::string ZellijModule::resolvePathFromName(const std::string& name) {
     std::string resolvedLayout = name;
     if (!resolvedPath.empty()) {
         resolvedLayout = resolvedPath.at(0);
-        spdlog::info("Resolved path to {}", resolvedLayout);
+        minilog::info("Resolved path to {}", resolvedLayout);
     } else {
-        spdlog::warn("Failed to resolve path, passing {} directly as -l", resolvedLayout);
+        minilog::warn("Failed to resolve path, passing {} directly as -l", resolvedLayout);
     }
     return resolvedLayout;
 }
