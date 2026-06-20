@@ -1,7 +1,7 @@
 {
     "name": "Umbra",
     "description": "This page contains Umbra's documentation.",
-    "site_prefix": "/umbra",
+    "prefix": "/umbra",
     "theme": "_default",
     "data": {
         "language": "en-GB",
