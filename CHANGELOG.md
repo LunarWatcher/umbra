@@ -4,6 +4,8 @@ Will be maintained after the first patch release. Everything up to that point is
 
 ## [unreleased]
 
+## [v0.4.0]
+
 ### Changed
 * Dropped spdlog in favour of minilog due to AI slop in spdlog'
   * Dropped stc's minilog in favour of separating it out into a separate library (still called minilog)
@@ -61,7 +63,9 @@ Will be maintained after the first patch release. Everything up to that point is
 
 _Initial release_
 
-[unreleased]: https://codeberg.org/LunarWatcher/umbra/compare/v0.3.1...master
+[unreleased]: https://codeberg.org/LunarWatcher/umbra/compare/v0.4.0...master
+[v0.4.0]: https://codeberg.org/LunarWatcher/umbra/compare/v0.3.2...v0.4.0
+[v0.3.2]: https://codeberg.org/LunarWatcher/umbra/compare/v0.3.1...v0.3.2
 [v0.3.1]: https://codeberg.org/LunarWatcher/umbra/compare/v0.3.0...v0.3.1
 [v0.3.0]: https://codeberg.org/LunarWatcher/umbra/compare/v0.2.1...v0.3.0
 [v0.2.1]: https://codeberg.org/LunarWatcher/umbra/compare/v0.2.0...v0.2.1
