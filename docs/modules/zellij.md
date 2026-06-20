@@ -25,12 +25,12 @@ This umbra module removes that limitation. It has the following order of executi
 1. The command is run either with or without a layout. If no layout is supplied, `$UMBRA_ZELLIJ_NAME_CONVENTION` (default: `default.kdl`; templates supported) is used. Must be a filename only
 2. If path or file name, use it directly. This is largely just for muscle memory compatibility, so `umbra z ./layout.kdl` doesn't break (the command is identical to `zellij -l ./layout.kdl`)
 3. If not path:
-    > [!note]
-    > In the future, a third lookup may be supported that's equivalent to a `layout_dir` array. This is not currently implemented because input processing hard.
+  > [!note]
+  > In the future, a third lookup may be supported that's equivalent to a `layout_dir` array. This is not currently implemented because input processing hard.
 
-    1. Look in `$UMBRA_ZELLIJ_PRIVATE_SUBDIR` (default: `{{git_root}}/.git/zellij/`; templates supported) 
-    2. Look in `$UMBRA_ZELLIJ_PUBLIC_SUBDIR` (default: `{{git_root}}/dev/zellij/`; templates supported)
-    3. Forward the string verbatim to zellij. This will trigger a lookup against the standard layout_dir.
+  1. Look in `$UMBRA_ZELLIJ_PRIVATE_SUBDIR` (default: `{{git_root}}/.git/zellij/`; templates supported) 
+  2. Look in `$UMBRA_ZELLIJ_PUBLIC_SUBDIR` (default: `{{git_root}}/dev/zellij/`; templates supported)
+  3. Forward the string verbatim to zellij. This will trigger a lookup against the standard layout_dir.
 
 
 This particular feature synergises well with both [localrc](docs/modules/localrc.md), which has a very similar private vs. public distinction, and [direnv](https://github.com/direnv/direnv/)
