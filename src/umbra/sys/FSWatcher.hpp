@@ -1,6 +1,6 @@
 #pragma once
 
-#include "stc/minilog.hpp"
+#include "minilog/minilog.hpp"
 #include <chrono>
 #include <vector>
 #include <filesystem>

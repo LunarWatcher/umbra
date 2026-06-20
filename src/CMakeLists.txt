@@ -24,6 +24,7 @@ target_link_libraries(
     umbrasrc
 PUBLIC
     stc
+    minilog
     CLI11::CLI11
     nlohmann_json::nlohmann_json
     cpr::cpr

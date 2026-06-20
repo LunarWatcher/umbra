@@ -1,5 +1,5 @@
     #include "Module.hpp"
-    #include "stc/minilog.hpp"
+    #include "minilog/minilog.hpp"
     #include "stc/Environment.hpp"
     #include "umbra/except/Exception.hpp"
 
@@ -35,9 +35,9 @@
                     count += 1;
                 }
                 if (count == 1) {
-                    minilog::config().level = minilog::Level::Info;
+                    minilog::setLevel(minilog::Level::Info);
                 } else if (count >= 2) {
-                    minilog::config().level = minilog::Level::Debug;
+                    minilog::setLevel(minilog::Level::Debug);
                 }
             },
             "Increases verbosity level. Up to -vvv has an effect (-vv for non-quiet modules)"
@@ -49,9 +49,9 @@
                     throw Exception("Passing both -q and -v is illegal");
                 }
                 if (count == 1) {
-                minilog::config().level = minilog::Level::Error;
+                    minilog::setLevel(minilog::Level::Error);
                 } else if (count >= 2) {
-                    minilog::config().level = minilog::Level::Critical; // TODO: replace with Off once Off is a thing
+                    minilog::setLevel(minilog::Level::Off);
                 }
             },
             "Decreases verbosity level. -q is error, -qq is off"
@@ -59,9 +59,9 @@
         // preparse_callback is called before add_flag callbacks
         subcommand->preparse_callback([this](size_t /* totalArgs */) {
             if (isModuleQuiet()) {
-                minilog::config().level = minilog::Level::Critical; // TODO: replace with Off once Off is a thing
-            } else if (minilog::config().level != minilog::Level::Debug) { // Prevent overriding from debug to info
-                minilog::config().level = minilog::Level::Info;
+                minilog::setLevel(minilog::Level::Off);
+            } else if (minilog::getLevel() != minilog::Level::Debug) { // Prevent overriding from debug to info
+                minilog::setLevel(minilog::Level::Info);
             }
     });
 }

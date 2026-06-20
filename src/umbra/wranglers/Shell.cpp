@@ -1,5 +1,5 @@
 #include "umbra/wranglers/Shell.hpp"
-#include "stc/minilog.hpp"
+#include "minilog/minilog.hpp"
 #include "stc/Environment.hpp"
 #include "stc/StringUtil.hpp"
 #include <stc/unix/Process.hpp>

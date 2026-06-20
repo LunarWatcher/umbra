@@ -1,7 +1,7 @@
 #include "MetaModule.hpp"
 #include <cpr/cpr.h>
 #include "nlohmann/json.hpp"
-#include "stc/minilog.hpp"
+#include "minilog/minilog.hpp"
 #include "umbra/except/Exception.hpp"
 #include "umbra/modules/Module.hpp"
 #include "umbra/util/Parse.hpp"

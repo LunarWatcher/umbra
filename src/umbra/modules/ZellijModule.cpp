@@ -1,6 +1,6 @@
 
 #include "CLI/CLI.hpp"
-#include "stc/minilog.hpp"
+#include "minilog/minilog.hpp"
 #include "stc/Environment.hpp"
 #include "stc/unix/Process.hpp"
 #include "umbra/except/Exception.hpp"

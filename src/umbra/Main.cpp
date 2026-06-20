@@ -1,12 +1,12 @@
-#include "stc/minilog.hpp"
+#include "minilog/minilog.hpp"
 #include "umbra/ModuleLoader.hpp"
 
 int main(int argc, const char* argv[]) {
 
 #ifdef UMBRA_DEBUG
-    minilog::config().level = minilog::Debug;
+    minilog::setLevel(minilog::Level::Debug);
 #else
-    minilog::config().level = minilog::Info;
+    minilog::setLevel(minilog::Level::Info);
 #endif
 
     umbra::ModuleLoader loader;

@@ -1,5 +1,5 @@
 #include "FilesystemExt.hpp"
-#include "stc/minilog.hpp"
+#include "minilog/minilog.hpp"
 #include "stc/unix/Process.hpp"
 #include <filesystem>
 #include <vector>

@@ -2,12 +2,11 @@
 
 Will be maintained after the first patch release. Everything up to that point is just establishing base features, and it's too much stuff to bother tracking.
 
-This changelog is loosely based on [Keep A Changelog](https://keepachangelog.com/en/1.1.0/).
-
 ## [unreleased]
 
 ### Changed
-* Dropped spdlog in favour of minilog due to AI slop in spdlog
+* Dropped spdlog in favour of minilog due to AI slop in spdlog'
+  * Dropped stc's minilog in favour of separating it out into a separate library (still called minilog)
 
 ## [v0.3.2]
 

@@ -1,5 +1,5 @@
 #include "DevenvModule.hpp"
-#include "stc/minilog.hpp"
+#include "minilog/minilog.hpp"
 #include "stc/Environment.hpp"
 #include "umbra/except/Exception.hpp"
 #include "umbra/modules/devenv/ConfigSpec.hpp"
