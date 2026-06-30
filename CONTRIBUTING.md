@@ -83,7 +83,7 @@ No unnecessary compile-time dependencies should be introduced, as compile-time d
 
 Currently, the following five dependencies are used:
 
-* [CLI11](https://github.com/CLIUtils/CLI11) ([3-Clause BSD license](https://github.com/CLIUtils/CLI11/blob/main/LICENSE)) for command-line parsing
+* [CLI12](https://codeberg.org/LunarWatcher/CLI12) ([3-Clause BSD license](https://codeberg.org/LunarWatcher/CLI12/src/branch/main/LICENSE)) for command-line parsing
 * [stc](https://codeberg.org/LunarWatcher/stc) ([MIT](https://codeberg.org/LunarWatcher/stc/src/branch/master/LICENSE)) for multiple common utils
 * [minilog](https://codeberg.org/LunarWatcher/minilog) ([MIT](https://codeberg.org/LunarWatcher/minilog/src/branch/master/LICENSE)) for (shock) logging
 * [nlohmann/json](https://github.com/nlohmann/json) ([MIT](https://github.com/nlohmann/json/blob/develop/LICENSE.MIT)) for user config and data storage[^2]

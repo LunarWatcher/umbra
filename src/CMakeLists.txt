@@ -25,7 +25,7 @@ target_link_libraries(
 PUBLIC
     stc
     minilog
-    CLI11::CLI11
+    CLI12::CLI12
     nlohmann_json::nlohmann_json
     cpr::cpr
 )

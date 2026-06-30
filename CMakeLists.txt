@@ -25,8 +25,8 @@ endif()
 
 include(FetchContent)
 # Fork of the original CLI11 diverging at 2.6.2 due to upstream use of AI slop machines
-FetchContent_Declare(cli11
-    GIT_REPOSITORY https://codeberg.org/LunarWatcher/CLI11
+FetchContent_Declare(cli12
+    GIT_REPOSITORY https://codeberg.org/LunarWatcher/CLI12
     GIT_TAG main
     EXCLUDE_FROM_ALL
 )
@@ -47,7 +47,7 @@ FetchContent_Declare(libcpr
     EXCLUDE_FROM_ALL
 )
 FetchContent_MakeAvailable(
-    cli11
+    cli12
     stc
     minilog
     json
