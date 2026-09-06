@@ -19,8 +19,8 @@ struct ParseTransformValidator : public CLI::Validator {
         // The description is the outward-facing name in positionals for whatever reason, so this can't actually be a
         // description. This results in
         // ```
-        // layout TEXT:Supports templates [default.kdl] 
-        //                             Path or name of the layout 
+        // layout TEXT:Supports templates [default.kdl]
+        //                             Path or name of the layout
         // ```
         // Which is _perfect_
         "Supports templates",

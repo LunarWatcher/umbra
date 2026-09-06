@@ -1,4 +1,4 @@
-add_executable(umbra_tests 
+add_executable(umbra_tests
     src/modules/DevenvModuleTests.cpp
     src/modules/ZellijModuleTests.cpp
 
@@ -22,7 +22,7 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(Catch2)
 
-target_link_libraries(umbra_tests Catch2::Catch2)
+target_link_libraries(umbra_tests Catch2::Catch2 stc::testutil)
 target_link_libraries(umbra_tests umbrasrc)
 target_include_directories(umbra_tests PRIVATE ./src/)
 

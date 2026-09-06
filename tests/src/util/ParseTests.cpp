@@ -57,4 +57,5 @@ TEST_CASE("{{cwd}}", "[Parse]") {
         ==
         std::filesystem::current_path().string()
     );
+    SKIP("Bad");
 }

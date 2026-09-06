@@ -6,9 +6,12 @@ add_library(umbrasrc STATIC
     umbra/modules/DevenvModule.cpp
     umbra/modules/Module.cpp
     umbra/modules/PtyModule.cpp
+    umbra/modules/TestModule.cpp
     umbra/modules/WatchModule.cpp
     umbra/modules/ZellijModule.cpp
     umbra/modules/meta/MetaModule.cpp
+
+    umbra/modules/test/Catch2Runner.cpp
 
     umbra/modules/devenv/ConfigSpec.cpp
 
@@ -28,6 +31,11 @@ PUBLIC
     CLI12::CLI12
     nlohmann_json::nlohmann_json
     cpr::cpr
+    LibXml2::LibXml2
+
+    andromeda::component
+    andromeda::dom
+    andromeda::screen
 )
 target_link_libraries(umbra PUBLIC umbrasrc)
 

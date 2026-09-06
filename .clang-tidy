@@ -30,6 +30,7 @@ Checks: >
   -misc-no-recursion,
   -misc-use-anonymous-namespace,
   -misc-static-assert,
+  -misc-multiple-inheritance,
   -performance-avoid-endl,
   -performance-enum-size,
   -readability-*,

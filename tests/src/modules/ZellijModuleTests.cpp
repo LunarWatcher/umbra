@@ -5,6 +5,8 @@
 
 #include <umbra/modules/ZellijModule.hpp>
 
+namespace {
+
 TEST_CASE("Non-existent paths are not resolved", "[ZellijModule]") {
     umbra::parse::CommonContext cc;
     umbra::ZellijModule mod{cc};
@@ -27,4 +29,6 @@ TEST_CASE("Paths are not modified", "[ZellijModule]") {
     REQUIRE(mod.resolvePathFromName("./a/b") == "./a/b");
     REQUIRE(mod.resolvePathFromName("a/b") == "a/b");
     REQUIRE(mod.resolvePathFromName("/a/b") == "/a/b");
+}
+
 }

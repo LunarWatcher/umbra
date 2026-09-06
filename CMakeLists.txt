@@ -14,8 +14,11 @@ option (UMBRA_COVERAGE "Whether or not to enable test coverage" OFF)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(SHARED OFF)
+set(BUILD_SHARED_LIBS OFF)
 set(SPDLOG_USE_STD_FORMAT ON CACHE STRING "" FORCE)
 set(CPR_USE_SYSTEM_CURL ON CACHE STRING "" FORCE)
+set(LIBXML2_WITH_TESTS OFF CACHE STRING "" FORCE)
+set(LIBXML2_WITH_PROGRAMS OFF CACHE STRING "" FORCE)
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -Wno-c++11-narrowing")
 
@@ -32,19 +35,31 @@ FetchContent_Declare(cli12
 )
 FetchContent_Declare(stc
     GIT_REPOSITORY https://github.com/LunarWatcher/stc
+    GIT_TAG v2026-09-06.2
 )
 FetchContent_Declare(minilog
     GIT_REPOSITORY https://github.com/LunarWatcher/minilog
 )
 FetchContent_Declare(json
-    GIT_REPOSITORY https://github.com/nlohmann/json
+    GIT_REPOSITORY https://github.com/LunarWatcher/json
     GIT_TAG v3.12.0
     EXCLUDE_FROM_ALL
 )
 FetchContent_Declare(libcpr
     GIT_REPOSITORY https://github.com/libcpr/cpr
-    GIT_TAG 1.12.0
+    GIT_TAG 1.14.0
     EXCLUDE_FROM_ALL
+)
+FetchContent_Declare(andromedaui
+    GIT_REPOSITORY https://codeberg.org/LunarWatcher/AndromedaUI
+    GIT_TAG v1.0.0
+)
+
+# libxml2 has an anti-AI policy: https://github.com/GNOME/libxml2/blob/master/README.md#strict-no-llm--no-ai-policy
+# Might unironically be worth switching to XML for config
+FetchContent_Declare(libxml2
+    GIT_REPOSITORY https://gitlab.gnome.org/GNOME/libxml2
+    GIT_TAG v2.15.3
 )
 FetchContent_MakeAvailable(
     cli12
@@ -52,7 +67,10 @@ FetchContent_MakeAvailable(
     minilog
     json
     libcpr
+    libxml2
+    andromedaui
 )
+
 # Set up versioning {{{
 find_program(GIT git)
 if (GIT)
