@@ -32,6 +32,12 @@ private:
      * Cached active test case for dirty checks before refreshing test details
      */
     int lastTestCase = -1;
+    void appendRunInformation(
+        andromeda::Component& testDetailsRoot,
+        const TestCases& cases,
+        int& activeTestCase,
+        int& activeRun
+    );
     void refreshTestDetails(
         andromeda::Component& testDetailsRoot,
         const TestCases& cases,

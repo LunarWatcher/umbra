@@ -198,6 +198,46 @@ void TestModule::render(TestCases cases) {
     }
 }
 
+void TestModule::appendRunInformation(
+    andromeda::Component& testDetailsRoot,
+    const TestCases& cases,
+    int& activeTestCase,
+    int& activeRun
+) {
+    auto& test = cases.at(activeTestCase);
+    auto runContainer = andromeda::Container::Vertical({}, &activeRun);
+    for (auto& run : test.runs) {
+        runContainer->Add(
+            andromeda::MenuEntry(andromeda::MenuEntryOption {
+                .label = "",
+                .transform = [this, run](const andromeda::EntryState& state) -> andromeda::Element {
+                    andromeda::Color color = getColorForResult(run.result.result);
+
+                    auto box = andromeda::color(
+                        color,
+                        andromeda::hbox({
+                                andromeda::text(
+                                    std::format("{}{}{}",
+                                        std::to_string(run.runNumber),
+                                        run.extraNames.empty() ? "" : ": ",
+                                        run.joinNames()
+                                    )
+                                )
+                            })
+                    );
+
+                    return (state.focused) ?
+                        box | andromeda::inverted | andromeda::bold | andromeda::focus
+                        : (state.active ? box | andromeda::bold : box);
+                }
+            })
+        );
+    }
+
+    testDetailsRoot->Add(
+        runContainer | andromeda::vscroll_indicator | andromeda::yframe | andromeda::border
+    );
+}
 
 void TestModule::refreshTestDetails(
     andromeda::Component& testDetailsRoot,
@@ -210,34 +250,11 @@ void TestModule::refreshTestDetails(
     }
     lastTestCase = activeTestCase;
     testDetailsRoot->DetachAllChildren();
-        
+
     auto& test = cases.at(activeTestCase);
 
     if ((size_t) activeRun >= test.runs.size()) {
         activeRun = 0;
-    }
-
-    auto runContainer = andromeda::Container::Vertical({}, &activeRun);
-    for (auto& run : test.runs) {
-        runContainer->Add(
-            andromeda::MenuEntry(andromeda::MenuEntryOption {
-                    .label = "",
-                    .transform = [this, run](const andromeda::EntryState& state) -> andromeda::Element {
-                        andromeda::Color color = getColorForResult(run.result.result);
-
-                        auto box = andromeda::color(
-                            color,
-                            andromeda::hbox({
-                                    andromeda::text(std::to_string(run.runNumber))
-                                })
-                        );
-
-                        return (state.focused) ?
-                            box | andromeda::inverted | andromeda::bold | andromeda::focus
-                            : (state.active ? box | andromeda::bold : box);
-                    }
-                })
-        );
     }
 
     auto split = [](const std::string& value) {
@@ -308,8 +325,19 @@ void TestModule::refreshTestDetails(
             }) | andromeda::flex_grow;
     });
     testDetailsRoot->Add(
-        runContainer | andromeda::vscroll_indicator | andromeda::yframe | andromeda::border
+        andromeda::Renderer([&test]() {
+            return andromeda::text(
+                test.name
+            ) | andromeda::underlined
+                | andromeda::bold
+                | andromeda::center;
+        })
     );
+
+    if (test.runs.size() != 1) {
+        appendRunInformation(testDetailsRoot, cases, activeTestCase, activeRun);
+    }
+    
     testDetailsRoot->Add(
         testDetails | andromeda::vscroll_indicator | andromeda::yframe
     );
