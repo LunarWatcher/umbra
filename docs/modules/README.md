@@ -14,12 +14,13 @@ This section contains a list of the enabled modules.
 
 The supported modules are (TODO: unfuck table)
 
-| Module name | Short description | Doc link | 
+| Module name | Short description | Doc link |
 | --- | --- | --- |
-| `devenv` | Sources per-repository environments and/or entire extra shell configurations | [modules/devenv.md](modules/devenv.md) |
-| `pty` | Forces scripts to run in a pty | [modules/pty.md](modules/pty.md) |
-| `watch` | Watches the filesystem  for changes in the paths provided on the CLI | [modules/watch.md](modules/watch.md) | 
-| `zellij` | Enables some extra per-directory and scoping functionality not present in zellij proper | [modules/zellij.md](modules/zellij.md) |
+| `devenv` | Sources per-repository environments and/or entire extra shell configurations | [modules/devenv.md](devenv.md) |
+| `pty` | Forces scripts to run in a pty | [modules/pty.md](pty.md) |
+| `test` | Shows or handles structured test data | [modules/test.md](test.md) |
+| `watch` | Watches the filesystem  for changes in the paths provided on the CLI | [modules/watch.md](watch.md) |
+| `zellij` | Enables some extra per-directory and scoping functionality not present in zellij proper | [modules/zellij.md](zellij.md) |
 
 The rest of this doc page is dedicated to clarifying things about modules in general, as well as terminology used in the documentation.
 
