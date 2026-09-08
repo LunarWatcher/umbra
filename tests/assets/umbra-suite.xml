@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Catch2TestRun name="umbra_tests" rng-seed="1560685118" xml-format-version="3" catch2-version="3.16.0" generator="stc::testutil::AugmentedXMLReporter">
+  <TestCase name="{{cwd}}" tags="[Parse]" filename="/home/olivia/programming/cpp/umbra/tests/src/util/ParseTests.cpp" line="54">
+    <TestRun run-number="0">
+      <Skip filename="/home/olivia/programming/cpp/umbra/tests/src/util/ParseTests.cpp" line="60">
+        Bad
+      </Skip>
+      <Duration durationInSeconds="0"/>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="true" success="true"/>
+    </TestRun>
+    <OverallResult success="true" skips="1"/>
+  </TestCase>
+  <TestCase name="Non-existent paths are not resolved" tags="[ZellijModule]" filename="/home/olivia/programming/cpp/umbra/tests/src/modules/ZellijModuleTests.cpp" line="10">
+    <TestRun run-number="0">
+      <Duration durationInSeconds="0.023869"/>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false" success="true">
+        <StdOut>
+11:28:35.682 | warning  | ZellijModule.cpp:135     | Failed to resolve path, passing __testreserved__ directly as -l
+        </StdOut>
+      </OverallResults>
+    </TestRun>
+    <OverallResult success="true" skips="0">
+      <StdOut>
+11:28:35.682 | warning  | ZellijModule.cpp:135     | Failed to resolve path, passing __testreserved__ directly as -l
+      </StdOut>
+    </OverallResult>
+  </TestCase>
+  <TestCase name="Test that comments are identified" tags="[JSONC]" filename="/home/olivia/programming/cpp/umbra/tests/src/util/JSONCParserTests.cpp" line="4">
+    <TestRun run-number="0">
+      <Section name="All comments" filename="/home/olivia/programming/cpp/umbra/tests/src/util/JSONCParserTests.cpp" line="5"/>
+      <Duration durationInSeconds="5.3e-05"/>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false" success="true"/>
+    </TestRun>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="The default environment should always exist" tags="[DevenvConfig]" filename="/home/olivia/programming/cpp/umbra/tests/src/modules/devenv/ConfigTests.cpp" line="4">
+    <TestRun run-number="0">
+      <Duration durationInSeconds="4e-05"/>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false" success="true"/>
+    </TestRun>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Normal strings are handled correctly" tags="[Parse]" filename="/home/olivia/programming/cpp/umbra/tests/src/util/ParseTests.cpp" line="10">
+    <TestRun run-number="0">
+      <Section name="Empty string is empty" filename="/home/olivia/programming/cpp/umbra/tests/src/util/ParseTests.cpp" line="11"/>
+      <Duration durationInSeconds="3.7e-05"/>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false" success="true"/>
+    </TestRun>
+    <TestRun run-number="1">
+      <Section name="Standard text is not modified" filename="/home/olivia/programming/cpp/umbra/tests/src/util/ParseTests.cpp" line="14"/>
+      <Duration durationInSeconds="4.1e-05"/>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false" success="true"/>
+    </TestRun>
+    <TestRun run-number="2">
+      <Section name="Double brackets standalone don't result in special handling" filename="/home/olivia/programming/cpp/umbra/tests/src/util/ParseTests.cpp" line="21"/>
+      <Duration durationInSeconds="3.9e-05"/>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false" success="true"/>
+    </TestRun>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Test environment deletion" tags="[testutil::Env]" filename="/home/olivia/programming/cpp/umbra/tests/src/testutil/selftest/EnvTests.cpp" line="8">
+    <TestRun run-number="0">
+      <Section name="It should just work" filename="/home/olivia/programming/cpp/umbra/tests/src/testutil/selftest/EnvTests.cpp" line="11"/>
+      <Duration durationInSeconds="7e-05"/>
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false" success="true"/>
+    </TestRun>
+    <TestRun run-number="1">
+      <Section name="It should work with exceptions" filename="/home/olivia/programming/cpp/umbra/tests/src/testutil/selftest/EnvTests.cpp" line="17"/>
+      <Duration durationInSeconds="7.5e-05"/>
+      <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false" success="true"/>
+    </TestRun>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Environment loading should support environment variables" tags="[DevenvModule]" filename="/home/olivia/programming/cpp/umbra/tests/src/modules/DevenvModuleTests.cpp" line="59">
+    <TestRun run-number="0">
+      <Section name="Without pre-defined TEST_PREPEND" filename="/home/olivia/programming/cpp/umbra/tests/src/modules/DevenvModuleTests.cpp" line="88"/>
+      <Duration durationInSeconds="0.047105"/>
+      <OverallResults successes="5" failures="0" expectedFailures="0" skipped="false" success="true"/>
+    </TestRun>
+    <TestRun run-number="1">
+      <Section name="With pre-defined TEST_PREPEND" filename="/home/olivia/programming/cpp/umbra/tests/src/modules/DevenvModuleTests.cpp" line="92"/>
+      <Duration durationInSeconds="0.047948"/>
+      <OverallResults successes="5" failures="0" expectedFailures="0" skipped="false" success="true"/>
+    </TestRun>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Verify environment loading" tags="[DevenvModule]" filename="/home/olivia/programming/cpp/umbra/tests/src/modules/DevenvModuleTests.cpp" line="11">
+    <TestRun run-number="0">
+      <Section name="Without pre-defined TEST_PREPEND" filename="/home/olivia/programming/cpp/umbra/tests/src/modules/DevenvModuleTests.cpp" line="40"/>
+      <Duration durationInSeconds="0.023692"/>
+      <OverallResults successes="5" failures="0" expectedFailures="0" skipped="false" success="true"/>
+    </TestRun>
+    <TestRun run-number="1">
+      <Section name="With pre-defined TEST_PREPEND" filename="/home/olivia/programming/cpp/umbra/tests/src/modules/DevenvModuleTests.cpp" line="45"/>
+      <Duration durationInSeconds="0.023599"/>
+      <OverallResults successes="5" failures="0" expectedFailures="0" skipped="false" success="true"/>
+    </TestRun>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Umbra's own public default.kdl is resolved" tags="[ZellijModule]" filename="/home/olivia/programming/cpp/umbra/tests/src/modules/ZellijModuleTests.cpp" line="16">
+    <TestRun run-number="0">
+      <Duration durationInSeconds="0.047288"/>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false" success="true">
+        <StdOut>
+11:28:35.873 | info     | ZellijModule.cpp:133     | Resolved path to /home/olivia/programming/cpp/umbra/dev/zellij/default.kdl
+        </StdOut>
+      </OverallResults>
+    </TestRun>
+    <OverallResult success="true" skips="0">
+      <StdOut>
+11:28:35.873 | info     | ZellijModule.cpp:133     | Resolved path to /home/olivia/programming/cpp/umbra/dev/zellij/default.kdl
+      </StdOut>
+    </OverallResult>
+  </TestCase>
+  <TestCase name="Parse full JSON" tags="[JSONC]" filename="/home/olivia/programming/cpp/umbra/tests/src/util/JSONCParserTests.cpp" line="20">
+    <TestRun run-number="0">
+      <Section name="Check raw parsing" filename="/home/olivia/programming/cpp/umbra/tests/src/util/JSONCParserTests.cpp" line="31"/>
+      <Duration durationInSeconds="5.9e-05"/>
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false" success="true"/>
+    </TestRun>
+    <TestRun run-number="1">
+      <Section name="Validate with JSON parsing" filename="/home/olivia/programming/cpp/umbra/tests/src/util/JSONCParserTests.cpp" line="37"/>
+      <Duration durationInSeconds="0.000121"/>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false" success="true"/>
+    </TestRun>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Brackets are handled correctly" tags="[Parse]" filename="/home/olivia/programming/cpp/umbra/tests/src/util/ParseTests.cpp" line="30">
+    <TestRun run-number="0">
+      <Section name="Git root is correctly expanded" filename="/home/olivia/programming/cpp/umbra/tests/src/util/ParseTests.cpp" line="36"/>
+      <Duration durationInSeconds="0.023554"/>
+      <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false" success="true"/>
+    </TestRun>
+    <TestRun run-number="1">
+      <Section name="curr_folder_name is correctly expanded" filename="/home/olivia/programming/cpp/umbra/tests/src/util/ParseTests.cpp" line="40"/>
+      <Duration durationInSeconds="0.023917"/>
+      <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false" success="true"/>
+    </TestRun>
+    <TestRun run-number="2">
+      <Section name="Other characters are not eaten" filename="/home/olivia/programming/cpp/umbra/tests/src/util/ParseTests.cpp" line="45"/>
+      <Duration durationInSeconds="0.023649"/>
+      <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false" success="true"/>
+    </TestRun>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <TestCase name="Paths are not modified" tags="[ZellijModule]" filename="/home/olivia/programming/cpp/umbra/tests/src/modules/ZellijModuleTests.cpp" line="25">
+    <TestRun run-number="0">
+      <Duration durationInSeconds="0.023501"/>
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false" success="true"/>
+    </TestRun>
+    <OverallResult success="true" skips="0"/>
+  </TestCase>
+  <OverallResults successes="56" failures="0" expectedFailures="0" skips="1"/>
+  <OverallResultsCases successes="11" failures="0" expectedFailures="0" skips="1"/>
+</Catch2TestRun>

@@ -16,6 +16,8 @@ public:
         const std::string& pathOrModule,
         const std::vector<std::string>& extraArguments
     ) override;
+
+    TestCases parseFile(const std::string& filename);
 };
 
 }

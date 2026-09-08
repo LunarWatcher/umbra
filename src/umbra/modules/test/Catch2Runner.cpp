@@ -75,7 +75,11 @@ bool safeGetBool(xmlNode* node, const xmlChar* propName) {
 }
 
 bool Catch2Runner::build(const std::string& identifier) {
-    stc::Unix::Process proc({"/usr/bin/make", identifier});
+    stc::Unix::Process proc({
+        "/usr/bin/make",
+        "-j", std::to_string(std::thread::hardware_concurrency()),
+        identifier
+    });
 
     if (proc.block() != 0) {
         minilog::error("Build failed");
@@ -97,7 +101,6 @@ TestCases Catch2Runner::parseXmlV3(
         [&](xmlNode* node) {
             std::string_view nodeName {reinterpret_cast<const char*>(node->name)};
 
-            // NOLINTNEXTLINE(bugprone-branch-clone): empty branches are kept for doc purposes, as well as placeholders for future data expansion
             if (nodeName == "TestCase") {
                 TestResult result = TestResult::Skipped;
                 TestRuns children;
@@ -180,6 +183,12 @@ TestCases Catch2Runner::parseXmlV3(
                                         run.stdErr = safeGetContent(stdErr);
                                     }
 
+                                } else if (nodeName == "Info") {
+                                    // TODO: suboptimal
+                                    if (!run.result.message) {
+                                        run.result.message = "";
+                                    }
+                                    *run.result.message += safeGetContent(runDataNode);
                                 } else {
                                     minilog::error("Unhandled node: {}", nodeName);
                                 }
@@ -204,6 +213,7 @@ TestCases Catch2Runner::parseXmlV3(
                 };
 
                 tests.push_back(std::move(testCase));
+                // NOLINTNEXTLINE(bugprone-branch-clone): empty branches are kept for doc purposes, as well as placeholders for future data expansion
             } else if (nodeName == "OverallResults") {
                 // Assertions? Might be sections?
             } else if (nodeName == "OverallResultsCases") {
@@ -250,6 +260,10 @@ TestCases Catch2Runner::runTests(
 
     minilog::info("Tests {}", code == 0 ? "passed" : "failed");
 
+    return parseFile(filename);
+}
+
+TestCases Catch2Runner::parseFile(const std::string& filename) {
     XMLDocumentContext doc(filename);
     auto versionStr = xmlGetProp(doc.root, (const xmlChar*) "xml-format-version");
 

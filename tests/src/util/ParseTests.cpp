@@ -8,7 +8,7 @@
 static umbra::parse::CommonContext cc;
 
 TEST_CASE("Normal strings are handled correctly", "[Parse]") {
-    SECTION("Emtpy string is empty") {
+    SECTION("Empty string is empty") {
         REQUIRE(umbra::parse::parse("", {cc}) == "");
     }
     SECTION("Standard text is not modified") {
@@ -57,5 +57,4 @@ TEST_CASE("{{cwd}}", "[Parse]") {
         ==
         std::filesystem::current_path().string()
     );
-    SKIP("Bad");
 }
