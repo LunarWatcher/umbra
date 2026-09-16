@@ -229,7 +229,7 @@ TestCases Catch2Runner::runTests(
     const std::vector<std::string>& extraArguments
 ) {
     const static std::string filename = "./.umbra-test-report-cache.xml";
-    auto path = pathOrModule.empty() ? std::string{"./bin/tests"} : pathOrModule;
+    auto path = pathOrModule.empty() ? std::string{"tests"} : pathOrModule;
     if (!path.contains('/')) {
         minilog::info("Name supplied: running build");
         if (!build(path)) {

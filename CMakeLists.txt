@@ -52,7 +52,7 @@ FetchContent_Declare(libcpr
 )
 FetchContent_Declare(andromedaui
     GIT_REPOSITORY https://codeberg.org/LunarWatcher/AndromedaUI
-    GIT_TAG v1.0.0
+    GIT_TAG 9beb4afe853e18412b506dac847b53bb13917ab8
 )
 
 # libxml2 has an anti-AI policy: https://github.com/GNOME/libxml2/blob/master/README.md#strict-no-llm--no-ai-policy

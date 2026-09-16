@@ -113,10 +113,7 @@ void TestModule::render(TestCases cases) {
 
     andromeda::Elements children;
 
-    auto menu = andromeda::Container::Vertical(
-        {},
-        &selectedTest
-    );
+    std::vector<andromeda::Elements> rows;
 
     size_t failed = 0, passed = 0, skipped = 0;
 
@@ -133,8 +130,8 @@ void TestModule::render(TestCases cases) {
             ++failed;
             break;
         }
-        menu->Add(
-            andromeda::MenuEntry(andromeda::MenuEntryOption {
+        rows.push_back({
+                (andromeda::MenuEntry(andromeda::MenuEntryOption {
                     .label = testCase.name,
                     .transform = [this, testCase](const andromeda::EntryState& state) {
                         andromeda::Color color = getColorForResult(testCase.overallResult);
@@ -150,9 +147,13 @@ void TestModule::render(TestCases cases) {
                             box | andromeda::inverted | andromeda::bold | andromeda::focus
                             : (state.active ? box | andromeda::bold : box);
                     }
-                })
-        );
+                }))
+            ->Render()
+        });
     }
+    auto menu = andromeda::gridbox(
+        rows
+    );
 
     int selectedTestRun = 0;
 
@@ -168,10 +169,13 @@ void TestModule::render(TestCases cases) {
                     ) | andromeda::center;
                 }),
                 andromeda::ResizableSplitLeft(
-                    menu | andromeda::flex
-                    | andromeda::vscroll_indicator
-                    | andromeda::yframe,
-                    testDetailsRoot | andromeda::flex | andromeda::vscroll_indicator | andromeda::yframe | andromeda::border,
+                    andromeda::Renderer([&]() {
+                            
+                        return menu
+                            | andromeda::vscroll_indicator
+                            | andromeda::yframe;
+                    }),
+                    testDetailsRoot | andromeda::flex | andromeda::border,
                     &splitSize
                 ) | andromeda::flex_grow
             })
