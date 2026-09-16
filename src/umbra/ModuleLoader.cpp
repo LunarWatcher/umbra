@@ -4,7 +4,6 @@
 #include <stc/Colour.hpp>
 
 #include "modules/include.hpp"
-#include "umbra/modules/TestModule.hpp"
 
 namespace umbra {
 ModuleLoader::ModuleLoader() : app(
@@ -20,7 +19,6 @@ ModuleLoader::ModuleLoader() : app(
         CREATE_MODULE(DevenvModule),
         CREATE_MODULE(PtyModule),
         CREATE_MODULE(WatchModule),
-        CREATE_MODULE(TestModule),
         CREATE_MODULE(MetaModule),
     };
 

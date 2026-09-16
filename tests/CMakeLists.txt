@@ -1,6 +1,5 @@
 add_executable(umbra_tests
     src/modules/DevenvModuleTests.cpp
-    src/modules/TestModuleTests.cpp
     src/modules/ZellijModuleTests.cpp
 
     src/modules/devenv/ConfigTests.cpp
