@@ -51,19 +51,12 @@ FetchContent_Declare(libcpr
     EXCLUDE_FROM_ALL
 )
 
-# libxml2 has an anti-AI policy: https://github.com/GNOME/libxml2/blob/master/README.md#strict-no-llm--no-ai-policy
-# Might unironically be worth switching to XML for config
-FetchContent_Declare(libxml2
-    GIT_REPOSITORY https://gitlab.gnome.org/GNOME/libxml2
-    GIT_TAG v2.15.3
-)
 FetchContent_MakeAvailable(
     cli12
     stc
     minilog
     json
     libcpr
-    libxml2
 )
 
 # Set up versioning {{{

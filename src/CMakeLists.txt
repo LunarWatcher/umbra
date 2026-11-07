@@ -28,7 +28,6 @@ PUBLIC
     CLI12::CLI12
     nlohmann_json::nlohmann_json
     cpr::cpr
-    LibXml2::LibXml2
 )
 target_link_libraries(umbra PUBLIC umbrasrc)
 
