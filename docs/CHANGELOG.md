@@ -1,8 +1,15 @@
+---
+{
+    "title": "Changelog"
+}
+---
 # Changelog
 
 Will be maintained after the first patch release. Everything up to that point is just establishing base features, and it's too much stuff to bother tracking.
 
 ## [unreleased]
+
+## [v0.4.1]
 
 ### Changed
 
@@ -68,7 +75,8 @@ Will be maintained after the first patch release. Everything up to that point is
 
 _Initial release_
 
-[unreleased]: https://codeberg.org/LunarWatcher/umbra/compare/v0.4.0...master
+[unreleased]: https://codeberg.org/LunarWatcher/umbra/compare/v0.4.1...master
+[v0.4.1]: https://codeberg.org/LunarWatcher/umbra/compare/v0.4.0...0.4.1
 [v0.4.0]: https://codeberg.org/LunarWatcher/umbra/compare/v0.3.2...v0.4.0
 [v0.3.2]: https://codeberg.org/LunarWatcher/umbra/compare/v0.3.1...v0.3.2
 [v0.3.1]: https://codeberg.org/LunarWatcher/umbra/compare/v0.3.0...v0.3.1
