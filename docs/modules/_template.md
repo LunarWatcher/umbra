@@ -1,3 +1,8 @@
+---
+{
+    "hidden": true
+}
+---
 # Module name
 
 ## Summary

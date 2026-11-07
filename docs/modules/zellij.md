@@ -2,7 +2,7 @@
 
 ## Summary
 * **Implementation language:** C++
-* **Additional runtime requirements:** https://zellij.dev/
+* **Additional runtime requirements:** <https://zellij.dev/>
 * **Base command**: `umbra zellij`, `umbra z`
 * **Command run without arguments:** `umbra zellij default.kdl`
 * **State:** alpha
@@ -33,6 +33,6 @@ This umbra module removes that limitation. It has the following order of executi
   3. Forward the string verbatim to zellij. This will trigger a lookup against the standard layout_dir.
 
 
-This particular feature synergises well with both [localrc](docs/modules/localrc.md), which has a very similar private vs. public distinction, and [direnv](https://github.com/direnv/direnv/)
+This particular feature synergises well with both [devenv](docs/modules/devenv.md), which has a very similar private vs. public distinction, and [direnv](https://github.com/direnv/direnv/)
 
 `{{git_root}}` is a literal template, that's automatically expanded. You can pass in both relative and absolute paths, but `{{git_root}}` is special. See [templating](../special/Templating.md)

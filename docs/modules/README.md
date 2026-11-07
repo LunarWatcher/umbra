@@ -18,7 +18,6 @@ The supported modules are (TODO: unfuck table)
 | --- | --- | --- |
 | `devenv` | Sources per-repository environments and/or entire extra shell configurations | [modules/devenv.md](devenv.md) |
 | `pty` | Forces scripts to run in a pty | [modules/pty.md](pty.md) |
-| `test` | Shows or handles structured test data | [modules/test.md](test.md) |
 | `watch` | Watches the filesystem  for changes in the paths provided on the CLI | [modules/watch.md](watch.md) |
 | `zellij` | Enables some extra per-directory and scoping functionality not present in zellij proper | [modules/zellij.md](zellij.md) |
 

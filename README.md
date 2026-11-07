@@ -41,7 +41,7 @@ On the magic side of things, `umbra z` takes an optional layout, with the defaul
 
 ## Installation and getting started
 
-See [Getting started](https://github.com/LunarWatcher/umbra/blob/master/docs/Getting%20started.md)
+See [Getting started](https://lunarwatcher.codeberg.page/umbra/getting-started.html)
 
 ## License
 
