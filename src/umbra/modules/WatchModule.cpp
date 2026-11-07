@@ -1,5 +1,6 @@
 #include "WatchModule.hpp"
-#include "umbra/sys/FSWatcher.hpp"
+#include <minilog/minilog.hpp>
+#include <stc/filewatcher/FileWatcher.hpp>
 #include <thread>
 #include <stc/unix/Process.hpp>
 
@@ -84,18 +85,17 @@ void WatchModule::moduleMain() {
         return;
     }
 
-    FSWatcher watcher(
+    stc::FileWatcher watcher(
         passthroughOpts,
         {
-            .commandDelayTimeout = this->delayMillis
+            .minimumDelay = this->delayMillis
         }
     );
 
     watcher.block([this](
-            EventKind,
-            const std::filesystem::path& path
-    ) {
-        std::cout << path.string() << std::endl;
+        auto,
+        const std::filesystem::path&
+    ) -> bool {
         if (this->command.has_value()) {
             // NOLINTNEXTLINE(bugprone-command-processor): it's a feature, not a bug
             std::system(this->command.value().c_str());

@@ -30,12 +30,12 @@ include(FetchContent)
 # Fork of the original CLI11 diverging at 2.6.2 due to upstream use of AI slop machines
 FetchContent_Declare(cli12
     GIT_REPOSITORY https://codeberg.org/LunarWatcher/CLI12
-    GIT_TAG main
+    GIT_TAG v3.1.0
     EXCLUDE_FROM_ALL
 )
 FetchContent_Declare(stc
     GIT_REPOSITORY https://github.com/LunarWatcher/stc
-    GIT_TAG v2026-09-06.2
+    GIT_TAG v2026-11-06.2
 )
 FetchContent_Declare(minilog
     GIT_REPOSITORY https://github.com/LunarWatcher/minilog

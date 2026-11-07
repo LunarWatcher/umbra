@@ -4,10 +4,15 @@ Will be maintained after the first patch release. Everything up to that point is
 
 ## [unreleased]
 
+### Changed
+
+* Removed FSWatcher in favour of stc::FileWatcher
+  * This fixes a number of bugs in `umbra w`, notably including incorrect delisting of parent directories when child folders are deleted
+
 ## [v0.4.0]
 
 ### Changed
-* Dropped spdlog in favour of minilog due to AI slop in spdlog'
+* Dropped spdlog in favour of minilog due to AI slop in spdlog
   * Dropped stc's minilog in favour of separating it out into a separate library (still called minilog)
 
 ## [v0.3.2]
